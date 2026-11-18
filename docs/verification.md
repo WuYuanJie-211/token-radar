@@ -1,35 +1,35 @@
-# Verification — token-radar-01 (radar-2)
+# Verification — token-radar-01 (radar-3)
 
 Date: 2026-11-18. Verifier: builder session. All checks below are read-only:
 no spending, no on-chain writes, no paid APIs.
 
-## 1. Model arithmetic — worked examples recomputed from the snapshot
+## 1. Model arithmetic — board top 10 recomputed from the snapshot
 
-The build reproduces the methodology's worked examples exactly (main.ts run,
-2026-11-18; board.json top 10 and watchlist sum):
+The build reproduces the board exactly (main.ts run, 2026-11-18;
+`board.json` top 10, cross-checked against `data.js` and the dashboard's
+own replay — 0/200 rows disagree):
 
-| protocol | model output | methodology §3b |
-|---|---|---|
-| OnRe | $66,143,640 | $66.14M |
-| OpenTrade | $59,383,765 | $59.4M |
-| R25 | $38,557,232 | $38.6M |
-| Veda | $35,798,044 | $35.80M |
-| Steakhouse Financial | $31,259,075 | $31.26M |
-| USDD | $30,412,472 | $30.4M |
-| Lofty | $27,815,849 | $27.8M |
-| Ember | $19,932,483 | $19.9M |
-| Valos | $18,764,759 | $18.8M |
-| Gauntlet | $18,617,147 | $18.6M |
-| Symbiotic | $4,133,016 | $4.13M |
-| Curvance | $12,858,127 | $12.86M |
-| Bittensor dTAO | $13,223,466 | $13.22M |
-| Tori Finance | $16,011,030 | $16.01M |
-| Reti Pooling | $778,950 | $0.78M |
+| protocol | model output |
+|---|---|
+| OpenTrade | $25,243,499 |
+| OnRe | $25,038,374 |
+| Veda | $23,053,940 |
+| Steakhouse Financial | $17,630,118 |
+| R25 | $16,965,182 |
+| Lofty | $14,969,984 |
+| Gauntlet | $11,989,442 |
+| Ember | $11,952,241 |
+| Saturn | $11,404,850 |
+| Upshift | $11,045,081 |
 
-Watchlist implied sum: **$533,087,670** (methodology: $533.1M). The starter
-flat-0.25 model gave ~$3.2B for the same watchlist — radar-2 is ~6x lower,
-driven by category multiples (RWA 0.275x vs restaking 0.025x) and the
-double-count + plausibility haircuts on the three largest rows.
+Watchlist implied sum: **$303,372,108**. radar-2 gave $533.1M for the
+same watchlist; radar-3 is lower because the size curve (slope -0.382)
+compresses big-TVL multiples — Steakhouse's $2.75B TVL now implies $17.6M
+instead of $31.3M, Veda's $1.56B implies $23.1M instead of $35.8M. The
+starter flat-0.25 model gave ~$3.2B for the same watchlist. Full
+out-of-sample validation (5-fold CV + two walk-forwards, blend beats both
+parents on all three) is in `docs/validation.md`; the methodology is in
+`docs/methodology.md` (§9 is the radar-3 section).
 
 ## 2. Spot checks with the user's skills (2026-11-18, live APIs)
 
@@ -66,13 +66,14 @@ Pre-token top rows — no genuine protocol token found:
   unofficial; the snapshot records no token and no official R25 token was
   found. Row stays pre-token; the lookalike is noted here, not in the board.
 
-Inconclusive — methodology source stands, skill check could not confirm:
-
-- **MEZO (mezo-earn)**: search returned Mezo USD (MUSD, real, mezo.org,
-  $210k mcap) plus $5–7k Solana memes named MEZO. No genuine MEZO
-  governance token surfaced in the top hits, so the 0.20 plausibility for
-  this row rests on the methodology's Bitget Jan 2026 campaign source, not
-  on this check. Flagged as the weakest edge-case verification.
+Verified 2026-11-18 (research pass, see `docs/methodology.md` §9 and the
+research report): **MEZO already trades** — CoinGecko ~$0.00293, mcap
+~$1.46M, listed on Coinbase/Gate/MEXC, -98% from its April 2026 ATH — so
+plausibility 0.20 stands on live market data, not on the Bitget source
+alone. The farm plan was rewritten to the live paths: MUSD Savings Vault,
+gauges, veMEZO (EVM + tBTC); Mezo Earn itself is still "coming soon" and
+native BTC deposit closed 2026-10-13, so the plan says so, and it flags
+the 4.7M MEZO emissions unlock on 2026-11-19.
 
 Comparables — live tokens behind the category multiples:
 
@@ -119,6 +120,14 @@ Comparables — live tokens behind the category multiples:
   the restaking group 0.75x instead of summing chains.
 - The snapshot records no supply data, so FDV is shown only as implied
   x [2, 4], a secondary line, never the headline number.
-- Upshift / Lagoon plausibility 1.00 is the weakest 1.00 in the board: no
-  points program was verified for them in research; at 0.50 both would
-  roughly halve. The dashboard's sandbox lets the judge test that.
+- Upshift plausibility 1.00 is now verified, not assumed: Season 2 points
+  are live with a 5x boost until $750M TVL (last re-checked 2026-10-12);
+  the official docs promise no token, so the row says so and treats points
+  as a possible — not promised — path. Lagoon went the other way: no own
+  points program exists (it is an ERC-7540 vault factory), so its
+  plausibility is 0.50 and its farm plan is yield + underlying rewards
+  only. Both verdicts were checked 2026-11-18.
+- The comparables pool is 116 live-token protocols (144 with a non-null
+  mcap, minus 16 with mcap 0 and 12 with mcap/TVL > 3), not 131 as the
+  radar-2 table said; corrected medians: Yield 0.191, Basis 0.482,
+  overall 0.177.
