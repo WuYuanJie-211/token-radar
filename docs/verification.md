@@ -1,4 +1,4 @@
-# Verification — token-radar-01 (radar-3)
+# Verification — token-radar-01 (radar-4)
 
 Date: 2026-11-18. Verifier: builder session. All checks below are read-only:
 no spending, no on-chain writes, no paid APIs.
@@ -11,25 +11,26 @@ own replay — 0/200 rows disagree):
 
 | protocol | model output |
 |---|---|
-| OpenTrade | $25,243,499 |
-| OnRe | $25,038,374 |
-| Veda | $23,053,940 |
-| Steakhouse Financial | $17,630,118 |
-| R25 | $16,965,182 |
-| Lofty | $14,969,984 |
-| Gauntlet | $11,989,442 |
-| Ember | $11,952,241 |
-| Saturn | $11,404,850 |
-| Upshift | $11,045,081 |
+| OnRe | $56,222,094 |
+| OpenTrade | $50,476,200 |
+| R25 | $32,773,647 |
+| Veda | $30,428,337 |
+| Steakhouse Financial | $26,570,213 |
+| USDD | $25,850,601 |
+| Lofty | $25,173,343 |
+| Tori Finance | $23,139,503 |
+| Axis | $20,273,174 |
+| Ember | $18,250,181 |
 
-Watchlist implied sum: **$303,372,108**. radar-2 gave $533.1M for the
-same watchlist; radar-3 is lower because the size curve (slope -0.382)
-compresses big-TVL multiples — Steakhouse's $2.75B TVL now implies $17.6M
-instead of $31.3M, Veda's $1.56B implies $23.1M instead of $35.8M. The
-starter flat-0.25 model gave ~$3.2B for the same watchlist. Full
-out-of-sample validation (5-fold CV + two walk-forwards, blend beats both
-parents on all three) is in `docs/validation.md`; the methodology is in
-`docs/methodology.md` (§9 is the radar-3 section).
+Watchlist implied sum: **$484,184,955**. radar-2 gave $533.1M for the
+same watchlist; radar-4 is lower only by the capped size adjustment
+(at most -15% on the largest rows) — OnRe's $308.9M TVL implies $56.2M
+instead of $66.1M, Steakhouse's $2.75B TVL implies $26.6M instead of
+$31.3M. radar-3 gave $303.4M because its full size curve (slope -0.382)
+compressed big-TVL multiples. Full out-of-sample validation (5-fold CV
++ two walk-forwards, size-adjusted model beats the flat baseline on all
+three) is in `docs/validation.md`; the methodology is in
+`docs/methodology.md` (§10 is the radar-4 section).
 
 ## 2. Spot checks with the user's skills (2026-11-18, live APIs)
 

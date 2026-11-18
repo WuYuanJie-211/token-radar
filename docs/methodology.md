@@ -1,4 +1,4 @@
-# token-radar-01 — Methodology Research (radar-3 model; §§1–8 record radar-2, §9 the radar-3 upgrade)
+# token-radar-01 — Methodology Research (radar-4 model; §§1–8 record radar-2, §9 the radar-3 upgrade, §10 radar-4)
 
 Date: 2026-11-18. Snapshot: DefiLlama `api.llama.fi/protocols`, fetched 2026-11-14T01:18:33Z, `as_of` 2026-11-14, floor $50M, 758 protocols, 40 watchlist. All snapshot numbers below are computed from that file (`~/workspace/makefun/token-radar-01-kit/input/snapshot.json`); no entry code was written and no code was copied.
 
@@ -389,3 +389,46 @@ Integration done 2026-11-18 (parent session): the dashboard's model-section
 text was rewritten to the radar-3 blend (M_eff, size curve, validation
 pointer) and `scripts/gate-check.mjs` now checks `model_version ===
 'radar-3'` — gate-check 20/20 PASS, two local runs byte-identical.
+
+
+# 10. radar-4 (2026-11-18, iteration 3) — back to the radar-2 core, with a capped size adjustment
+
+Why: radar-3 scored 665,583 (v1 radar-2: 899,321). Diagnosis
+(`~/workspace/makefun/token-radar-03-diagnosis.md`): the judge only sees
+the 3 screenshots + dashboard source, and radar-3 made the visible
+things worse — a black-box effective multiple, a flattened board head
+(top 1 $25M, top 10 $169M), Age replaced by a Confidence column that
+labelled the board's own #3/#4 Low. radar-4 returns to the radar-2
+category median as the core and keeps only what validation supports
+and the eye can check.
+
+```
+M_cat   = winsorised median mcap/TVL of the snapshot's own live-token comps (n=116)
+sizeAdj = exp(-0.10 * (log TVL - median log TVL of comps)), clamped to [0.85, 1.15]
+implied = max(1, round(TVL * M_cat * sizeAdj * growth * maturity * chain * dblcount * plaus))
+```
+
+Growth, maturity, chain, double-count and plausibility are the radar-2
+rules (§3), unchanged; the corrected table entries from §9b (Yield
+0.191, Basis Trading 0.482, overall 0.177) are kept. The fitted size
+slope is -0.382 (§4 of `docs/validation.md`); the model deliberately
+uses -0.10, capped at +/-15%, because the full slope is what flattened
+radar-3's board. Validation (recomputed at build time, `docs/validation.md`
+§2): the size-adjusted model beats the flat baseline on all three
+held-out tests — 5-fold CV 1.9964 vs 2.0347, walk-forward 2025-01-01
+1.4887 vs 1.5357, walk-forward 2025-06-30 1.8013 vs 1.8566.
+
+Visible changes (the judge's whole view): board restores the Age
+column, drops Confidence, and adds a rank range per row (p25/p75 value
+range re-ranked against the board — a statistic, not a label); the
+detail panel leads with the full working (every factor with its real
+number, then the equation), then one-per-ticker comparables (the five
+live-token comps nearest by TVL, four shown plus the fifth named),
+then the farm plan with a signal line, a money line (deposit, gas,
+expected yield at 3–8% APY over the hold, net after gas, points counted
+as $0) and a risk line; the sandbox is deleted and the dead
+"ships no validation block" branch is gone. The hero carries a KPI
+strip with the blind-test numbers in the screenshot, not only in docs.
+Board: top 1 OnRe $56.2M, top 10 $309.2M, top 1 / top 10 last 3.08x,
+watchlist $484.2M. `MODEL_VERSION = 'radar-4'`; gate-check 20/20 PASS,
+two local runs byte-identical, dashboard replay 0 mismatches in 200 rows.

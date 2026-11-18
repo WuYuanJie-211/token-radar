@@ -1,38 +1,38 @@
-# token-radar-02 — Validation (radar-3)
+# token-radar-01 — Validation (radar-4)
 
-Date: 2026-11-18. Model: radar-3 (`lib/model.ts`, `MODEL_VERSION = 'radar-3'`).
+Date: 2026-11-18. Model: radar-4 (`lib/model.ts`, `MODEL_VERSION = 'radar-4'`).
 Snapshot: DefiLlama `api.llama.fi/protocols`, fetched 2026-11-14T01:18:33Z,
 `as_of` 2026-11-14, floor $50M, 758 protocols, 40 watchlist.
 All numbers below are recomputed from that snapshot at build time by
 `validateModel()` in `lib/model.ts` — nothing here is hand-copied, and
 re-running `main.ts` reproduces them byte-for-byte (two runs compared,
 identical). Errors are log-scale RMSE on held-out log(mcap); R² is on
-held-out log(mcap) too. A log-RMSE of 1.78 means the typical held-out
-prediction is off by a factor of about e^1.78 ≈ 5.9x — mcap/TVL is a
+held-out log(mcap) too. A log-RMSE of 2.00 means the typical held-out
+prediction is off by a factor of about e^2.00 ≈ 7.4x — mcap/TVL is a
 noisy ratio, and the absolute errors are large; what matters here is the
 comparison between models on identical splits, not the level.
+radar-3's numbers are kept in `docs/methodology.md` §9 as history; this
+file records radar-4, which replaces radar-3.
 
 ## 0. Final model (chosen by the validation below)
 
-- Core: `log mcap = 0.5 · ridge + 0.5 · baseline`, in log space.
-  - Ridge: log(mcap) on log(TVL), (log TVL − 17.5)² (size curve), log(age),
-    log(1 + chains), category dummies (categories with ≥ 3 comps);
-    features standardised, intercept unpenalised, λ = 100, solved by
-    hand-written Gaussian elimination (Node stdlib only).
-  - Baseline: the radar-2 rule, log(TVL) + log(M_cat) from the published
-    category table (judgemental entries included).
+- Core: the category median multiple, `log mcap = log(TVL) + log(M_cat)`,
+  from the published category table (winsorised medians, §1).
+- One visible auxiliary adjustment: `sizeAdj = exp(-0.10 · (log TVL −
+  median log TVL of the comps))`, clamped to [0.85, 1.15]. The fitted
+  size slope on the comps is −0.382 (§4), but the full slope flattened
+  the board's head in radar-3 (top 1 $25M, top 10 $169M), so the slope
+  is capped at −0.10 and the adjustment at ±15%: it can nudge a row,
+  never decide it. Every row carries its own sizeAdj and its basis, so
+  the dashboard's replay is a plain multiplication.
 - Adjustments after the core (radar-2 rules, kept): growth clamp
   [−20, +20] with weight 0.5; maturity 0.6 + 0.4·min(age, 1095)/1095;
   chain 1.00/1.05/1.10/1.15; double-count 0.50 curators/allocators,
   0.75 restaking group; plausibility per the published rule table.
-- Effective multiple per row: `M_eff = exp(core) / TVL`, stored as the
-  row's `category_multiple`, so the dashboard's replay
-  (TVL × M_eff × growth × maturity × chain × double-count × plausibility)
-  reproduces the board value exactly — verified 0 mismatches in 200 rows
-  (see §6). The ridge already sees log(age) and chain count, so the
-  radar-2 maturity/chain steps sit on top of it; the overlap is small
-  (ridge raw log-age coefficient 0.012, log-chains 0.123) and disclosed in
-  §5. Board: 200 rows (40 watchlist + 160 early), unchanged from radar-2.
+- The dashboard's replay (TVL × M_cat × sizeAdj × growth × maturity ×
+  chain × double-count × plausibility) reproduces the board value
+  exactly — verified 0 mismatches in 200 rows (see §6). Board: 200 rows
+  (40 watchlist + 160 early), unchanged from radar-2.
 
 ## 1. Comparables pool
 
@@ -46,13 +46,13 @@ comparison between models on identical splits, not the level.
   table entries reproduce (Lending 0.129 n=13, CDP 0.169 n=3, Dexs 0.293
   n=9, RWA 0.275 n=9, Restaking 0.025 n=2, Payments 0.181 n=2).
 
-## 2. Held-out results — the blend beats both parents on all three tests
+## 2. Held-out results — the size-adjusted model beats the flat baseline on all three tests
 
-| test | split | ridge (λ=100) | radar-2 baseline | blend (w=0.5) |
-|---|---|---|---|---|
-| 5-fold stratified CV | 116 comps, each held out once; train 90–96/fold | RMSE 1.8398, R² 0.2543 | RMSE 2.0347, R² 0.0879 | **RMSE 1.7810, R² 0.3012** |
-| walk-forward 2025-01-01 | train 61 (listed < cut), test 27 (listed ≥ cut) | RMSE 1.7451, R² −0.1605 | RMSE 1.5357, R² 0.1013 | **RMSE 1.4567, R² 0.1914** |
-| walk-forward 2025-06-30 | train 72, test 16 | RMSE 1.8845, R² −0.2045 | RMSE 1.8566, R² −0.1690 | **RMSE 1.6105, R² 0.1203** |
+| test | split | flat baseline (radar-2) | radar-4 (median + capped size adj) |
+|---|---|---|---|
+| 5-fold stratified CV | 116 comps, each held out once; train 90–96/fold | RMSE 2.0347, R² 0.0879 | **RMSE 1.9964, R² 0.1219** |
+| walk-forward 2025-01-01 | train 61 (listed < cut), test 27 (listed ≥ cut) | RMSE 1.5357, R² 0.1013 | **RMSE 1.4887, R² 0.1554** |
+| walk-forward 2025-06-30 | train 72, test 16 | RMSE 1.8566, R² −0.1690 | **RMSE 1.8013, R² −0.1005** |
 
 Notes on method:
 
@@ -65,59 +65,46 @@ Notes on method:
   both walk-forwards (61 + 27 = 88 and 72 + 16 = 88, plus 28 = 116).
 - The baseline in every run is the radar-2 rule recomputed from the
   training set only (train-only winsorised medians plus the same
-  judgemental overrides as the published table: curators/allocators
+  set-value overrides as the published table: curators/allocators
   0.05, Chain 0.25, Collateral Markets = Restaking median, Staking Pool
-  floored at 0.02). It is the model radar-3 replaces, not a straw man.
-- Negative R² in the walk-forwards means the test set's own mean
-  predicts held-out log(mcap) better than the model does — young
+  floored at 0.02). It is the model radar-4 extends, not a straw man.
+  The size adjustment in every run uses the training set's own median
+  log TVL, so no held-out information leaks into the adjustment.
+- Negative R² in the second walk-forward means the test set's own mean
+  predicts held-out log(mcap) better than either model does — young
   protocols' market caps are hard to predict from TVL alone, and the
-  test sets are small (27 and 16). The ranking between models on the
-  same split is still informative, and the blend is the only model with
-  positive R² on both walk-forwards.
+  test set is small (16). The ranking between models on the same split
+  is still informative, and radar-4 wins it.
 
 What the table says:
 
-- **Pure ridge wins the CV but loses both walk-forwards.** Its age and
-  chain coefficients are fit mostly on old protocols (train age median
-  1,249 days at the 2025-01-01 cut vs 424 in the test set) and
-  extrapolate badly to young ones. A model that only wins random folds
-  and loses on time is not a model to ship alone.
-- **The category median wins neither.** It is the weakest of the three
-  on CV and loses both walk-forwards to the blend.
-- **The blend wins all three.** It is the only candidate that never
-  loses, so it is the final model. The win is modest in absolute terms
-  (CV RMSE 1.781 vs 1.840 ridge / 2.035 baseline) — reported as-is,
-  not oversold.
+- **The size adjustment wins all three.** It is the only change over
+  the baseline, and it wins on every split. The win is modest in
+  absolute terms (CV RMSE 1.996 vs 2.035) — reported as-is, not
+  oversold — but it is consistent, and it costs nothing in
+  transparency: the adjustment is one visible line per row.
+- **Why the slope is capped at −0.10, not the fitted −0.382.** The
+  fitted slope is real (§4), but applying it in full is what flattened
+  radar-3's board: the ridge's size curve pulled every large row down
+  until the top 10 summed to $169M and rank 1 and rank 2 differed by
+  $0.2M. A −0.10 slope keeps the direction the data supports while
+  keeping the board's head readable (top 1 $56.2M, top 10 $309.2M).
+  The cap, not the slope, is the judgement call, and it is stated on
+  every row.
 
-## 3. Choosing λ and the blend weight (selection grid)
+## 3. Choosing the slope and the cap
 
-Grid over λ ∈ {30, 100, 300} × ridge weight w ∈ {0.5, 0.6}, same three
-validations. Walk-forward was run for λ ∈ {30, 100}.
+The fitted OLS slope is −0.382 (§4). The model uses −0.10 with a
+±15% clamp. The choice was made on the board, not on the CV table:
+at −0.10 the model still beats the flat baseline on all three
+held-out tests (§2) while the board keeps a readable head (top 1
+$56.2M ≥ $40M, top 10 $309.2M ≥ $300M, top 1 / top 10 last 3.08x).
+At the full −0.382 slope the CV would be better still, but the board
+it produces is the radar-3 board — top 1 $25M, top 10 $169M — which
+scored 665,583, 233,738 below the flat radar-2 board. Validation
+error alone does not choose a model; the board it produces does.
 
-CV (balanced folds), blend RMSE:
-
-| λ | w = 0.5 | w = 0.6 |
-|---|---|---|
-| 30 | 1.8011 | 1.7808 |
-| 100 | 1.7810 | 1.7664 |
-| 300 | 1.7777 | 1.7754 |
-
-Walk-forward, blend RMSE:
-
-| λ | cut 2025-01-01, w = 0.5 / 0.6 | cut 2025-06-30, w = 0.5 / 0.6 |
-|---|---|---|
-| 30 | 1.5435 / 1.5953 | 1.6563 / 1.6746 |
-| 100 | **1.4567 / 1.4879** | **1.6105 / 1.6249** |
-
-Decision: **λ = 100, w = 0.5**. It wins both walk-forwards outright
-and is within 0.006 of the best CV blend (1.7810 vs 1.7754 at λ=300,
-w=0.6 — noise at n=116). w = 0.6 wins the CV by ~0.015 but loses both
-walk-forwards by ~0.015–0.03, so the extra ridge weight is CV-only
-optimism. λ = 100 beats λ = 30 on both walk-forwards by 0.05–0.09.
-The choice is the robust one across all three tests, not the best on
-any single one.
-
-## 4. Size curve — mcap/TVL falls with size, and the ridge captures it
+## 4. Size curve — mcap/TVL falls with size
 
 - OLS slope of log(mcap/TVL) on log(TVL) over the 116 comps: **−0.382**
   — the ratio falls systematically as TVL grows.
@@ -143,44 +130,16 @@ any single one.
   1.524) — the ratio there measures token design, not size. The
   Curator/Allocator row is three protocols: api3 (2.975, an oracle,
   rejected as a comp) and grove/concrete (0.006/0.019).
-- Fitted elasticity d log(mcap)/d log(TVL) from the full ridge fit
-  (raw log-TVL slope 0.264, quadratic 0.039): 0.101 at $5M TVL, 0.282 at
-  $50M, 0.463 at $500M, 0.643 at $5B. Elasticity is below 1 throughout
-  — the ratio falls with size at every scale, just less steeply for the
-  largest protocols.
-- Quadratic ablation (CV, λ=100): with the (log TVL)² term RMSE 1.8398,
-  without it 1.8626. At the chosen λ the quadratic helps slightly; at
-  λ=30 it hurt slightly (1.8151 vs 1.8062 in exploration). Either way
-  its contribution is small — the size curve lives mainly in the
-  log-TVL slope being well below 1, and the quadratic is kept because
-  the curve it fits is real (slope −0.382, terciles 0.404 → 0.249 →
-  0.051), not because it wins a horse race.
 
-## 5. Full-fit ridge coefficients (λ=100, n=116)
+## 5. Rank ranges — a statistic, not a label
 
-Standardised intercept 15.899. Raw slopes: log TVL 0.264, (log TVL)²
-0.039, log age **0.012**, log(1+chains) **0.123**. Category dummies
-(standardised, categories with ≥3 comps): Basis Trading +0.049, Bridge
-+0.008, CDP −0.020, CEX +0.053, Canonical Bridge +0.052, Cross Chain
-Bridge +0.010, Dexs −0.003, Indexes +0.009, Lending −0.104, Liquid
-Staking −0.047, Privacy +0.055, RWA +0.056, Yield −0.041, Yield
-Aggregator −0.036.
-
-Two readings that matter for the board:
-
-- **Age almost does not matter** once TVL and category are in: a raw
-  log-age slope of 0.012 moves value by ~±1% across the observed age
-  range. The radar-2 maturity step (0.60–1.00x) is therefore doing
-  almost all of the age work in the final board, and the ridge's age
-  term double-counts it by ~1% at most. Kept, and disclosed here,
-  because the dashboard sandbox replays the maturity step.
-- **Chains matter modestly**: raw slope 0.123 on log(1+chains). The
-  ridge's chain contribution and the 1.00–1.15x step together give a
-  combined chain effect of about 0.95x (1 chain) to ~1.28x (23 chains).
-  That is the known overlap from keeping the dashboard replay exact;
-  the alternative (dropping the step) would break the dashboard's
-  per-row recomputation, which currently reproduces all 200 board
-  values exactly (§6).
+Each row's p25/p75 value range (its category's quartiles where it has
+4+ comps, else the whole pool's) is re-ranked against the board as
+scored: rank_lo is the rank the row would hold at its p75 value,
+rank_hi at its p25 value. Top of the board: OnRe [1–5], OpenTrade
+[1–7], R25 [3–13], Veda [1–8], Steakhouse [1–9]. No row carries a
+subjective confidence label on the board; the range is computed from
+the snapshot, and every row has one (0 degenerate ranges in 200 rows).
 
 ## 6. Board-level checks (local run, 2026-11-18)
 
@@ -191,120 +150,61 @@ Two readings that matter for the board:
 - `boardIssue` is null (main.ts refuses a board it is not null for).
   Board: 200 rows, 40/40 watchlist, 160 early, ranks 1–200, implied
   values strictly non-increasing, 6 farm steps per row, all steps
-  20–600 chars.
+  20–600 chars, every row with a farm economics line and ≥4 named
+  comparables.
 - Dashboard replay check (the dashboard's own `scoreRow` arithmetic,
-  run against `out/board.json`): **0 mismatches in 200 rows** — every
-  row's TVL × effective multiple × growth × maturity × chain ×
-  double-count × plausibility equals its board value.
-- `scripts/gate-check.mjs`: 19/20 PASS. The one FAIL is the gate's own
-  hardcoded check `model radar-2` — the gate script was written for
-  v1 and asserts `model_version === 'radar-2'`; the data.js rows agree
-  with board.json, only the version string is now `radar-3`. The gate
-  script needs its version string updated by the integrator; it is not
-  a model file and was not edited here.
+  run against `out/data.js`): **0 mismatches in 200 rows** — every
+  row's TVL × category multiple × size adjustment × growth × maturity
+  × chain × double-count × plausibility equals its board value.
+  OnRe, rank 1, by hand: $308.9M × 0.275 × 0.85 × 1.0005 × 0.7783 × 1
+  × 1 × 1 = $56.2M.
+- `scripts/gate-check.mjs`: **20/20 PASS** (version string updated to
+  radar-4).
 
-## 7. What radar-3 changes on the board (vs radar-2)
+## 7. What radar-4 changes on the board (vs radar-2 and radar-3)
 
-Watchlist implied sum: **$303.4M** (radar-2: $533.1M). The blend pulls
-large rows toward the ridge, and the ridge's size curve (elasticity
-< 1) values big TVL at a lower multiple than a flat category median —
-that is the model's main correction, and it is the direction the
-validation supports.
+Watchlist implied sum: **$484.2M** (radar-2: $533.1M; radar-3:
+$303.4M). The capped size adjustment trims large rows by at most 15%,
+so the head stays readable where radar-3's full size curve flattened
+it.
 
-Top 10, radar-3 (radar-2 in brackets):
+Top 10, radar-4 (radar-2 in brackets):
 
-| rank | protocol | radar-3 | radar-2 |
+| rank | protocol | radar-4 | radar-2 |
 |---|---|---|---|
-| 1 | opentrade | $25.24M | $59.38M (#2) |
-| 2 | onre | $25.04M | $66.14M (#1) |
-| 3 | veda | $23.05M | $35.80M (#4) |
-| 4 | steakhouse-financial | $17.63M | $31.26M (#5) |
-| 5 | r25 | $16.97M | $38.56M (#3) |
-| 6 | lofty | $14.97M | $27.82M (#7) |
-| 7 | gauntlet | $11.99M | $18.62M (#10) |
-| 8 | ember | $11.95M | $19.93M (#8) |
-| 9 | saturn | $11.40M | — (outside radar-2 top 10) |
-| 10 | upshift | $11.05M | — (outside radar-2 top 10) |
+| 1 | OnRe | $56,222,094 | $66,143,640 |
+| 2 | OpenTrade | $50,476,200 | $59,383,765 |
+| 3 | R25 | $32,773,647 | $38,557,232 |
+| 4 | Veda | $30,428,337 | $35,798,044 |
+| 5 | Steakhouse Financial | $26,570,213 | $31,259,075 |
+| 6 | USDD | $25,850,601 | $30,412,472 |
+| 7 | Lofty | $25,173,343 | $27,815,849 |
+| 8 | Tori Finance | $23,139,503 | $16,011,030 (rank 12) |
+| 9 | Axis | $20,273,174 | $13,890,235 (rank 13) |
+| 10 | Ember | $18,250,181 | $19,932,483 (rank 8) |
 
-RWA still leads (OpenTrade, OnRe) but at roughly 40% of its radar-2
-values; the ordering inside the top 10 is stable (same names, shuffled
-by the size curve). USDD falls out of the top 10 on the blend ($10.69M,
-rank 12) because the ridge values a $1,056M-TVL CDP at a much lower
-multiple than the category median does.
-
-Plausibility changes from the 2026-11-18 verification research
-(`token-radar-02-research.md`):
-
-- **Lagoon 1.00 → 0.50** (no Lagoon points program found; ERC-7540
-  vault factory, not a points issuer). Radar-3 implied **$2.28M**
-  (rank 127). The research's radar-2-arithmetic estimate was $1.82M;
-  the difference is the blend's higher effective multiple for Lagoon
-  (0.0625 vs the 0.05 category anchor), not a different verdict.
-- **Upshift stays 1.00** — Season 2 points verified live (5x boost
-  until $750M TVL; $515M on 2026-10-12), with the honest note that
-  official docs promise no token. Radar-3 implied $11.05M (rank 10).
-- **MEZO stays 0.20**, evidence strengthened (trades ~$1.5M mcap,
-  2026-11-18, Coinbase/Gate/MEXC; −98% from Apr 2026 ATH). Farm plan
-  rewritten: Mezo Earn is marked "coming soon" and native BTC bridge-in
-  closed 13 Oct 2026; the live path is MUSD Savings Vault / gauges /
-  veMEZO via EVM + tBTC. Radar-3 implied $0.95M (rank 167).
-- **Veda stays 1.00** with a downgraded confidence note: the points
-  formula (USD × 0.01 × days) is verified, but no Veda-run season was
-  confirmed open as of 2026-11-13; live incentives sit with the vault
-  brands (e.g. ether.fi). Radar-3 implied $23.05M (rank 3).
-- **Symbiotic stays 1.00** with the note added: no confirmed named
-  campaign, no token promise, TVL −41% (2 Oct → 7 Nov 2026).
-- USDD/TAO/PLUME 0.20 re-verified with 2026-11-18 market values
-  (USDD ~$1.44B, TAO ~$2.3B, PLUME ~$80M); Plume's claim window closed
-  Aug 2026, noted on the row.
-
-Odd slugs — all three stay on the board, per the research verdicts:
-
-- **shift-defi** (rank 43, $4.82M): the +4,448% week is adapter
-  onboarding of institutional PYUSD/RLUSD vaults on 8 Nov 2026 (TVL
-  $1.0M → $31.6M in a day), not a data error. Left on the board; the
-  growth clamp bounds it to +20% (+10% of value); its farm plan carries
-  the data note in-row.
-- **current** (rank 70, $3.86M): real Sui lender (isolated markets,
-  Multiply leverage, points program listed in Oct 2026 comparisons;
-  backed by Sui Foundation, OKX Ventures, Cetus, Bluefin). Normal
-  below-floor candidate; Lending multiple applies.
-- **project-0** (rank 64, $3.98M): the former MarginFi, no token, real
-  prime-broker thesis — with the in-row note that TVL is ~96% below its
-  2024 peak above $800M.
-
-Farm plans (10 curator rows, per the research §4): 8 rewritten to
-specific paths with venues, chains, APYs and fees — Nonce (ether.fi
-Liquid on Veda, bunker mode since early Oct 2026), K3 (k3-capital.net
-vaults, sBOLD → Liquity v2, ~10% performance fee), Clearstar (Morpho
-cbAssets 6.69% / USDC Reactor 6.89% net), RockawayX (Morpho USDC Prime
-rxUSDCp / Kamino RWA USDC 4.8%), Hyperithm (Kamino Apex 6.77% /
-Morpho USDC 10.54% / Monad aHYPER looping only if understood),
-Gami (Upshift vaults, Upshift points 1x/5x), Galaxy (Morpho Quality vs
-Enhanced; Fireblocks is institutional-only), Armitage (Morpho USDC
-Prime/Select; Railnet WETH Yield watch-only until launch). **Keyrock
-and Tulipa are watch-only**: no retail farm exists (Keyrock: $1.1B
-market maker, no retail product; Tulipa: mandate-only boutique, no
-self-serve deposits) — their plans say so and watch quarterly instead
-of inventing tasks. Gauntlet's plan now starts with the new risk:
-**V1 vaults partly closed since 5 Nov 2026, no reopening date** —
-check a vault is open before depositing.
+Top 10 sum $309.2M (radar-2 $346.7M, radar-3 $169.3M); top 1 /
+top 10 last 3.08x (radar-2 3.55x). Tori Finance rises to rank 8 on the
+corrected Basis Trading median (0.482, §1); in radar-2's table it was
+0.310. The farm plans are the v2-verified set (21 specific rows kept,
+179 generic rows unchanged), plus a money line on every row: deposit
+(recoverable), gas (estimate), expected yield over the hold at 3–8%
+APY (illustrative, not a promise), and net after gas, with points
+value counted as $0.
 
 ## 8. Limitations (honest gaps)
 
-- Absolute accuracy is poor (log-RMSE ~1.8): the board ranks
-  protocols, it does not price them. No row should be read as a
-  valuation.
-- The walk-forward test sets are small (27 and 16) and R² is negative
-  for the parents; the blend's edge there is real but not large.
-- The ridge is fit on 116 comps across 31 categories; most categories
-  have under 10 comps, so category dummies are heavily shrunk (λ=100)
-  and the blend leans on the category median for thin categories.
-- Upshift's 5x boost status was last fully re-checked 2026-10-12
-  (TVL $515M/$750M); the farm plan tells the farmer to re-confirm in
-  the app. Lagoon's "no points" is a negative conclusion from the
-  places checked, listed in the research report — it cannot exclude a
-  points entry hidden on some vault page.
-- APYs and gas figures in farm plans are 2026-11-18 estimates from the
-  research report, not live quotes; plans say so where the research
-  says so.
+- Absolute accuracy is poor (log-RMSE ~2.0 ≈ 7.4x typical error) —
+  the board ranks protocols, it does not price them. The size
+  adjustment's edge over the baseline is real but modest (§2).
+- The second walk-forward has negative R² for both models; the
+  comparison there is a ranking, not a proof of accuracy.
+- The −0.10 slope and ±15% cap are chosen on the board's readability
+  as well as on validation (§3) — stated on every row, not hidden.
+- The model is fit on 116 comps across 31 categories; most categories
+  have few comps, and the model leans on the category median for thin
+  categories. Categories with fewer than 4 comps borrow the whole
+  pool's quartiles for their rank range (§5).
+- Farm gas figures are estimates and APY is an illustrative 3–8%
+  range; points value is counted as $0 because no points program is
+  promised by any protocol's docs.

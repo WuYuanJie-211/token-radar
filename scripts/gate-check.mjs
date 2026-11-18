@@ -149,13 +149,13 @@ if (dataMatch) {
     const radar = JSON.parse(dataMatch[1]);
     dataOk = radar.rows.length === rows.length
       && radar.rows.every((dr, i) => dr.slug === rows[i].slug && dr.implied_value_usd === rows[i].implied_value_usd)
-      && radar.model_version === 'radar-3';
+      && radar.model_version === 'radar-4';
     dataDetail = dataOk ? `${radar.rows.length} rows, model ${radar.model_version}` : 'data.js rows disagree with board.json';
   } catch (e) {
     dataDetail = `data.js JSON parse failed: ${e.message}`;
   }
 }
-check('data.js: rows agree with board.json, model radar-3', dataOk, dataDetail);
+check('data.js: rows agree with board.json, model radar-4', dataOk, dataDetail);
 
 process.stdout.write(failures === 0 ? 'gate-check: ALL PASS\n' : `gate-check: ${failures} FAILURE${failures === 1 ? '' : 'S'}\n`);
 process.exit(failures === 0 ? 0 : 1);

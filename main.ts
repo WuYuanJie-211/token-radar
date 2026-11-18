@@ -1,6 +1,6 @@
 // token-radar-01 entry point (Node 22, standard library only, no network).
 //
-// Reads the sealed snapshot, scores every pre-token protocol with the radar-2
+// Reads the sealed snapshot, scores every pre-token protocol with the radar-4
 // model in lib/model.ts, and writes the entry's output directory:
 //
 //   board.json      the ranked board (200 rows: 40 watchlist + 160 early)

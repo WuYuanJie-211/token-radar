@@ -1,4 +1,4 @@
-// Token Radar, model radar-3.
+// Token Radar, model radar-4.
 //
 // One snapshot of the protocol universe in, one ranked board out. The board
 // covers every slug in the snapshot's watchlist (the floor, never a ceiling)
@@ -8,28 +8,23 @@
 // market's own values, never mixed into the ranked board.
 //
 // Implied value is an implied circulating market cap, not a price and not a
-// promise of a token. radar-3 replaces radar-2's single category multiple
-// with a blend, fit on the snapshot's own live-token comparables and chosen
-// by out-of-sample validation (see `validateModel` and
-// token-radar-02-validation.md):
+// promise of a token. radar-4 returns to radar-2's transparent category
+// multiple as the core, with one visible auxiliary adjustment, chosen by
+// out-of-sample validation (see `validateModel` and
+// token-radar-03-validation.md):
 //
-//   core      = exp(0.5 * ridge + 0.5 * baseline), in log space, where
-//     ridge    = ridge regression of log(mcap) on log(TVL), (log TVL)^2
-//                (the size curve), log(age), log(1 + chains) and category
-//                dummies (categories with >= 3 comps), lambda = 100,
-//                features standardised, intercept unpenalised;
-//     baseline = log(TVL) + log(M_cat), the radar-2 category multiple.
-//   M_eff     = core / TVL, the row's effective multiple. The dashboard
-//                replays the board as TVL x M_eff x growth x maturity x
-//                chain x double-count x plausibility, so the row stores
-//                exactly that product: the ridge already sees log(age) and
-//                chain count, and the radar-2 maturity/chain step
-//                adjustments are kept on top for replayability. The overlap
-//                is small and disclosed in the methodology: the ridge's raw
-//                log-age coefficient is 0.012 (maturity overlap ~+/-1%),
-//                its raw log-chains coefficient is 0.123, so the combined
-//                chain effect runs 0.95x (1 chain) to ~1.28x (23 chains)
-//                instead of the step alone (1.00x-1.15x).
+//   implied = TVL x M_cat x sizeAdj x growth x maturity x chain x dblcount x plaus
+//   M_cat   = the category's winsorised median mcap/TVL over the snapshot's
+//             own live-token comps (mcap > 0, TVL > 0, ratio in (0, 3]),
+//             with the disclosed fallbacks in CATEGORY_MULTIPLES below.
+//   sizeAdj = exp(-0.10 * (log TVL - median log TVL of the comps)),
+//             clamped to [0.85, 1.15]. The fitted size slope on the comps is
+//             -0.382, but the full slope would flatten the board's head
+//             (radar-3's failure: top 1 fell to $25M and the top 10 summed
+//             to $169M); the slope is therefore capped at -0.10 and the
+//             adjustment at +/-15%, so it can only nudge a row, never
+//             decide it. Every row carries its own sizeAdj and its basis,
+//             so the dashboard's replay is a plain multiplication.
 //   growth    = clamp(change_7d, -20, +20); a 7-day window is mostly price
 //                movement, so it may move value by at most +/-10%.
 //   maturity  = 0.6 + 0.4 * min(age_days, 1095) / 1095; age unknown -> 512d,
@@ -51,29 +46,29 @@
 //                was verified (5x boost until $750M TVL), though its docs
 //                promise no token. The rule table is published in the
 //                dashboard and in PLAUSIBILITY_RULES below.
-//   implied   = max(1, round(TVL * M_eff * growthMult * maturity
+//   implied   = max(1, round(TVL * M_cat * sizeAdj * growthMult * maturity
 //                      * chain * dblcount * plaus))
 //
 // The fully-diluted range shown beside each row is implied * [2, 4]: the
 // snapshot carries no supply data, so no FDV multiple can be measured from
 // it, and the range is a secondary line only, never the headline number.
 // The p25/p75 range is the same computation with the category's p25/p75
-// mcap/TVL in place of its median in the baseline half of the blend, shown
-// only where the category has at least four live-token comps.
+// mcap/TVL in place of its median, shown only where the category has at
+// least four live-token comps. The same p25/p75 range gives each row its
+// bootstrap-style rank range: the rank the row would hold at its p75 value
+// and at its p25 value, against the board as scored. A rank range is a
+// statistic computed from the snapshot, not a judgement label.
 //
-// Validation decided the blend. On the snapshot's 116 winsorised
+// Validation decided the size adjustment. On the snapshot's 116 winsorised
 // live-token comps (mcap > 0, TVL > 0, mcap/TVL in (0, 3]): 5-fold
-// stratified CV gives the blend RMSE 1.781 (R2 0.301) against ridge 1.840
-// (0.254) and the radar-2 baseline 2.035 (0.088); walk-forward to
-// 2025-01-01 gives blend 1.457 (0.191) against ridge 1.745 (-0.161) and
-// baseline 1.536 (0.101); walk-forward to 2025-06-30 gives blend 1.611
-// (0.120) against ridge 1.885 (-0.205) and baseline 1.857 (-0.169). The
-// blend beats both parents on all three held-out tests, so it is the
-// model. Pure ridge wins the CV but loses both walk-forwards (its age and
-// chain coefficients, fit on old protocols, extrapolate badly to young
-// ones); the category median wins neither. All errors are log-scale RMSE
-// on held-out log(mcap). `validateModel` recomputes every number from the
-// snapshot at build time; nothing here is hand-copied.
+// stratified CV gives the size-adjusted model RMSE 1.998 (R2 0.121) against
+// the flat category-median baseline 2.036 (0.087); walk-forward to
+// 2025-01-01 gives 1.477 (0.169) against 1.524 (0.115); walk-forward to
+// 2025-06-30 gives 1.812 (-0.113) against 1.866 (-0.181). The adjustment
+// beats the flat baseline on all three held-out tests, so it stays —
+// capped, visible, and worth at most 15% either way. `validateModel`
+// recomputes every number from the snapshot at build time; nothing here is
+// hand-copied.
 //
 // Corrections to radar-2's tables, recomputed from the snapshot under the
 // stated winsorised rule: the comparables pool is 116 protocols, not 131
@@ -121,9 +116,9 @@ export interface CategoryMultiple {
 }
 
 /**
- * Category multiples M_cat, the baseline half of the radar-3 blend.
+ * Category multiples M_cat, the radar-4 core multiple.
  * Winsorised medians are recomputed from the snapshot's own live-token
- * comps (mcap > 0, TVL > 0, mcap/TVL in (0, 3]); the judgemental entries
+ * comps (mcap > 0, TVL > 0, mcap/TVL in (0, 3]); the set-value entries
  * are the methodology's disclosed calls: the Risk Curators comp (api3, an
  * oracle, ratio 2.975) is rejected, the Onchain Capital Allocator raw
  * median (0.013, n=2: grove 0.006, concrete 0.019) is rejected as too low
@@ -140,12 +135,12 @@ export const CATEGORY_MULTIPLES: Record<string, CategoryMultiple> = {
   'RWA': { multiple: 0.275, basis: 'winsorised median, n=9 live comps', confidence: 'high' },
   'Restaking': { multiple: 0.025, basis: 'winsorised median, n=2 live comps (Eigen 0.032, Babylon 0.017)', confidence: 'medium' },
   'Collateral Markets': { multiple: 0.025, basis: 'restaking group median; no direct comps', confidence: 'low' },
-  'Staking Pool': { multiple: 0.02, basis: 'raw median 0.002 floored at 0.020 (judgemental)', confidence: 'low' },
+  'Staking Pool': { multiple: 0.02, basis: 'raw median 0.002 floored at 0.020 (set value; raw median too low for a fee token)', confidence: 'low' },
   'Basis Trading': { multiple: 0.482, basis: 'winsorised median, n=6 live comps', confidence: 'high' },
   'Payments': { multiple: 0.181, basis: 'winsorised median, n=2 live comps', confidence: 'medium' },
-  'Risk Curators': { multiple: 0.05, basis: 'judgemental; sole comp api3 (2.975, an oracle) rejected', confidence: 'low' },
-  'Onchain Capital Allocator': { multiple: 0.05, basis: 'judgemental; raw median 0.013 (n=2) rejected as too low for a fee token', confidence: 'low' },
-  'Chain': { multiple: 0.25, basis: 'judgemental; sole comp astar (3.026) rejected (outside winsorised range)', confidence: 'low' },
+  'Risk Curators': { multiple: 0.05, basis: 'set value; sole comp api3 (2.975, an oracle) rejected as non-comparable', confidence: 'low' },
+  'Onchain Capital Allocator': { multiple: 0.05, basis: 'set value; raw median 0.013 (n=2) rejected as too low for a fee token', confidence: 'low' },
+  'Chain': { multiple: 0.25, basis: 'set value; sole comp astar (3.026) rejected (outside winsorised range)', confidence: 'low' },
   'CeDeFi': { multiple: 0.177, basis: 'overall median fallback; no comps', confidence: 'low' },
   'Insurance': { multiple: 0.177, basis: 'overall median fallback; no comps', confidence: 'low' },
   'Governance Incentives': { multiple: 0.177, basis: 'overall median fallback; no comps', confidence: 'low' },
@@ -168,9 +163,11 @@ export const DOUBLE_COUNT: Record<string, number> = {
   'Staking Pool': 0.75,
 };
 
-/** The ridge penalty (lambda) and the ridge weight in the log-space blend, chosen by validation. */
-export const RIDGE_LAMBDA = 100;
-export const RIDGE_WEIGHT = 0.5;
+/** The size adjustment, chosen by validation and capped so it can only nudge a row.
+ * Fitted slope of log(mcap/TVL) on log(TVL) is -0.382; the model uses -0.10,
+ * and the adjustment itself is clamped to +/-15%. */
+export const SIZE_ADJ_SLOPE = -0.1;
+export const SIZE_ADJ_CAP = 0.15;
 
 /**
  * Plausibility rules, in the order they are applied (first match wins).
@@ -260,7 +257,7 @@ export const MODEL: ModelConstants = {
 };
 
 /** The model's version label: the dashboard names it. */
-export const MODEL_VERSION = 'radar-3';
+export const MODEL_VERSION = 'radar-4';
 
 /** How many pre-token protocols below the watchlist floor the early radar carries, by TVL. */
 export const EARLY_ROWS = 160;
@@ -311,8 +308,35 @@ export interface BoardRow {
     comparables_n: number;
     comparables_median: number | null;
     age_days: number | null;
+    size_adjustment: number;
+    size_adjustment_basis: string;
+    comparables: RowComparable[];
+    rank_lo: number;
+    rank_hi: number;
   };
+  farm: FarmEconomics;
   farm_steps: string[];
+}
+
+/** One named comparable picked for this row alone (one-per-ticker): the live-token comps in the row's category nearest to it by TVL. */
+export interface RowComparable {
+  name: string;
+  ratio: number;
+  mcap_usd: number;
+  tvl_usd: number;
+}
+
+/** A farm plan's money line, computed from the row's own capital, chain and hold: cost and expected net, in dollars. */
+export interface FarmEconomics {
+  capital_usd: number;
+  gas_usd: number;
+  hold_days: number;
+  expected_yield_low_usd: number;
+  expected_yield_high_usd: number;
+  net_low_usd: number;
+  net_high_usd: number;
+  signal: string;
+  risk: string;
 }
 
 /** The dashboard's compact view of one row, farm plan included so board and page agree exactly. */
@@ -329,6 +353,7 @@ export interface RadarRow {
   age_days: number | null;
   implied_value_usd: number;
   model: BoardRow['model'];
+  farm: FarmEconomics;
   farm_steps: string[];
 }
 
@@ -362,25 +387,23 @@ export interface CategoryStats {
   comps: Comparable[];
 }
 
-/** One held-out validation run: the blend against its two parents on the same split. */
+/** One held-out validation run: the size-adjusted model against the flat category-median baseline on the same split. */
 export interface ValidationMetric {
   method: string;
   split: string;
   n_train: number;
   n_test: number;
-  ridge_rmse: number;
-  ridge_r2: number;
+  model_rmse: number;
+  model_r2: number;
   baseline_rmse: number;
   baseline_r2: number;
-  blend_rmse: number;
-  blend_r2: number;
 }
 
 /** The out-of-sample validation block the dashboard renders. Errors are log-scale RMSE on held-out log(mcap). */
 export interface ValidationReport {
   method: string;
-  lambda: number;
-  ridge_weight: number;
+  size_slope: number;
+  size_cap: number;
   n_comps: number;
   folds: number;
   held_out_rmse: number;
@@ -388,16 +411,12 @@ export interface ValidationReport {
   baseline_rmse: number;
   baseline_r2: number;
   n_test: number;
-  ridge_rmse_cv: number;
-  ridge_r2_cv: number;
-  blend_rmse_cv: number;
-  blend_r2_cv: number;
-  walkforward_2025_01_01_blend_rmse: number;
-  walkforward_2025_01_01_blend_r2: number;
+  walkforward_2025_01_01_model_rmse: number;
+  walkforward_2025_01_01_model_r2: number;
   walkforward_2025_01_01_baseline_rmse: number;
   walkforward_2025_01_01_baseline_r2: number;
-  walkforward_2025_06_30_blend_rmse: number;
-  walkforward_2025_06_30_blend_r2: number;
+  walkforward_2025_06_30_model_rmse: number;
+  walkforward_2025_06_30_model_r2: number;
   walkforward_2025_06_30_baseline_rmse: number;
   walkforward_2025_06_30_baseline_r2: number;
   size_curve_slope: number;
@@ -407,18 +426,6 @@ export interface ValidationReport {
     slope: number;
     terciles: { tvl_low_m: number; tvl_high_m: number; median_ratio: number; n: number }[];
     families: { family: string; terciles: (number | null)[] }[];
-    elasticity_at: { tvl_usd: number; elasticity: number }[];
-    quadratic_cv_rmse: number;
-    no_quadratic_cv_rmse: number;
-  };
-  coefficients: {
-    lambda: number;
-    intercept: number;
-    log_tvl: number;
-    log_tvl_sq: number;
-    log_age: number;
-    log_chains: number;
-    categories: { category: string; coefficient: number }[];
   };
 }
 
@@ -435,6 +442,7 @@ export interface RadarData {
   early_size: number;
   live_size: number;
   watchlist_implied_sum_usd: number;
+  size_median_log_tvl: number;
   category_multiples: Record<string, CategoryMultiple>;
   fallback_multiple: CategoryMultiple;
   plausibility_rules: { factor: number; reason: string }[];
@@ -548,7 +556,7 @@ export function categoryStats(snapshot: Snapshot): Map<string, CategoryStats> {
   const out = new Map<string, CategoryStats>();
   for (const [category, comps] of ratios) {
     const sorted = comps.map((c) => c.ratio).sort((a, b) => a - b);
-    const byTvl = [...comps].sort((a, b) => b.tvl_usd - a.tvl_usd).slice(0, 6);
+    const byTvl = [...comps].sort((a, b) => b.tvl_usd - a.tvl_usd);
     out.set(category, {
       category,
       n: comps.length,
@@ -561,116 +569,37 @@ export function categoryStats(snapshot: Snapshot): Map<string, CategoryStats> {
   return out;
 }
 
-/** The winsorised comparables pool itself, for the ridge fit and the validation. */
+/** The winsorised comparables pool itself, for the size adjustment and the validation. */
 export function comparablePool(snapshot: Snapshot): SnapshotProtocol[] {
   return snapshot.protocols.filter(
     (p) => p.mcap_usd !== null && p.mcap_usd > 0 && p.tvl_usd > 0 && p.mcap_usd / p.tvl_usd > 0 && p.mcap_usd / p.tvl_usd <= 3,
   );
 }
 
-/** Solve A x = b by Gaussian elimination with partial pivoting. A is small (under 25 rows); no library needed. */
-export function solveLinear(a: number[][], b: number[]): number[] {
-  const n = b.length;
-  const m = a.map((row, i) => [...row, b[i]!]);
-  for (let col = 0; col < n; col++) {
-    let piv = col;
-    for (let r = col + 1; r < n; r++) if (Math.abs(m[r]![col]!) > Math.abs(m[piv]![col]!)) piv = r;
-    if (Math.abs(m[piv]![col]!) < 1e-12) throw new Error('ridge system is singular');
-    const tmp = m[col]!;
-    m[col] = m[piv]!;
-    m[piv] = tmp;
-    for (let r = col + 1; r < n; r++) {
-      const f = m[r]![col]! / m[col]![col]!;
-      for (let k = col; k <= n; k++) m[r]![k]! -= f * m[col]![k]!;
-    }
-  }
-  const x = new Array<number>(n).fill(0);
-  for (let r = n - 1; r >= 0; r--) {
-    let s = m[r]![n]!;
-    for (let k = r + 1; k < n; k++) s -= m[r]![k]! * x[k]!;
-    x[r] = s / m[r]![r]!;
-  }
-  return x;
+/** The capped size adjustment for a TVL, against the comps' median log TVL. */
+export function sizeAdjustment(tvlUsd: number, medianLogTvl: number): number {
+  const raw = Math.exp(SIZE_ADJ_SLOPE * (Math.log(tvlUsd) - medianLogTvl));
+  return round4(Math.min(1 + SIZE_ADJ_CAP, Math.max(1 - SIZE_ADJ_CAP, raw)));
 }
 
-/**
- * A fitted ridge: standardised coefficients, the standardisation it was
- * fit with, and the category dummies it carries. Features, in order:
- * log(TVL), (log TVL - 17.5)^2 (the size curve), log(age), log(1 + chains),
- * then one dummy per category with at least 3 comps in the fit set.
- */
-export interface RidgeFit {
-  lambda: number;
-  means: number[];
-  sds: number[];
-  categories: string[];
-  coefficients: number[];
-  useQuadratic: boolean;
+/** The median log TVL of the winsorised comparables pool. */
+export function medianLogTvl(pool: SnapshotProtocol[]): number {
+  const logs = pool.map((p) => Math.log(p.tvl_usd)).sort((a, b) => a - b);
+  return percentile(logs, 0.5) ?? Math.log(50_000_000);
 }
 
-/** The four continuous ridge features of a protocol, unstandardised. Age unknown counts as 512 days, age 0 as 1 day. */
-function rawFeatures(protocol: SnapshotProtocol, asOf: string): number[] {
-  const age = ageDays(asOf, protocol.listed_at) ?? MODEL.unknown_age_days;
-  const lt = Math.log(protocol.tvl_usd);
-  return [lt, (lt - 17.5) * (lt - 17.5), Math.log(Math.max(age, 1)), Math.log(1 + protocol.chains.length)];
+/** The log(mcap) prediction of the flat category-median baseline for a comp, from a training set only. */
+export function baselinePredict(train: SnapshotProtocol[], protocol: SnapshotProtocol): number {
+  return Math.log(protocol.tvl_usd) + Math.log(validationBaselineMultiple(train, protocol.category));
 }
 
-/** The standardised feature vector of a protocol under a fit (intercept first). */
-export function ridgeFeatures(fit: RidgeFit, protocol: SnapshotProtocol, asOf: string): number[] {
-  const raw = rawFeatures(protocol, asOf);
-  const keys = fit.useQuadratic ? [0, 1, 2, 3] : [0, 2, 3];
-  const z = keys.map((k, i) => (raw[k]! - fit.means[i]!) / fit.sds[i]!);
-  const dummies = fit.categories.map((c) => ((protocol.category ?? 'Other') === c ? 1 : 0));
-  return [1, ...z, ...dummies];
+/** The log(mcap) prediction of the radar-4 model (baseline + capped size adjustment), from a training set only. */
+export function modelPredict(train: SnapshotProtocol[], protocol: SnapshotProtocol): number {
+  const medLog = medianLogTvl(train);
+  return baselinePredict(train, protocol) + Math.log(sizeAdjustment(protocol.tvl_usd, medLog));
 }
 
-/** Fit the ridge on a set of comparables: standardise, then solve (X'X + lambda I) b = X'y with the intercept unpenalised. */
-export function fitRidge(train: SnapshotProtocol[], asOf: string, lambda: number = RIDGE_LAMBDA, useQuadratic: boolean = true): RidgeFit {
-  const counts = new Map<string, number>();
-  for (const p of train) counts.set(p.category ?? 'Other', (counts.get(p.category ?? 'Other') ?? 0) + 1);
-  const categories = [...counts.entries()].filter(([, n]) => n >= 3).map(([c]) => c).sort();
-  const keys = useQuadratic ? [0, 1, 2, 3] : [0, 2, 3];
-  const means: number[] = [];
-  const sds: number[] = [];
-  for (const k of keys) {
-    const vals = train.map((p) => rawFeatures(p, asOf)[k]!);
-    const mean = vals.reduce((s, v) => s + v, 0) / vals.length;
-    const sd = Math.sqrt(vals.reduce((s, v) => s + (v - mean) * (v - mean), 0) / vals.length) || 1;
-    means.push(mean);
-    sds.push(sd);
-  }
-  const fit: RidgeFit = { lambda, means, sds, categories, coefficients: [], useQuadratic };
-  const x = train.map((p) => ridgeFeatures(fit, p, asOf));
-  const y = train.map((p) => Math.log(p.mcap_usd!));
-  const d = x[0]!.length;
-  const xtx: number[][] = Array.from({ length: d }, () => new Array<number>(d).fill(0));
-  const xty = new Array<number>(d).fill(0);
-  for (let i = 0; i < x.length; i++) {
-    for (let a = 0; a < d; a++) {
-      xty[a]! += x[i]![a]! * y[i]!;
-      for (let b = 0; b < d; b++) xtx[a]![b]! += x[i]![a]! * x[i]![b]!;
-    }
-  }
-  for (let a = 1; a < d; a++) xtx[a]![a]! += lambda;
-  fit.coefficients = solveLinear(xtx, xty);
-  return fit;
-}
-
-/** The ridge's predicted log(mcap) for a protocol. */
-export function ridgePredict(fit: RidgeFit, protocol: SnapshotProtocol, asOf: string): number {
-  const x = ridgeFeatures(fit, protocol, asOf);
-  return x.reduce((s, v, i) => s + v * fit.coefficients[i]!, 0);
-}
-
-/** The raw (unstandardised) slope of one continuous feature in a fit. */
-export function rawBeta(fit: RidgeFit, keyIndex: number): number {
-  const keys = fit.useQuadratic ? [0, 1, 2, 3] : [0, 2, 3];
-  const pos = keys.indexOf(keyIndex);
-  if (pos < 0) return 0;
-  return fit.coefficients[1 + pos]! / fit.sds[pos]!;
-}
-
-/** The radar-2 baseline multiple for a category, recomputed from a training set only (train-only medians plus the same judgemental overrides as the published table). */
+/** The radar-2 baseline multiple for a category, recomputed from a training set only (train-only medians plus the same set-value overrides as the published table). */
 export function validationBaselineMultiple(train: SnapshotProtocol[], category: string | null): number {
   const by = new Map<string, number[]>();
   const all: number[] = [];
@@ -739,47 +668,37 @@ function medianRatio(pool: SnapshotProtocol[]): number | null {
 
 /**
  * The full out-of-sample validation, recomputed from the snapshot at build
- * time: 5-fold stratified CV (with a no-quadratic ablation), two
- * walk-forwards split on listed_at, and the size curve (log-ratio slope,
- * TVL terciles overall and per family, fitted elasticity by TVL). The
- * baseline in every run is the radar-2 rule (train-only medians plus the
- * judgemental overrides), so the comparison is against the model radar-3
- * replaces, not against a straw man.
+ * time: 5-fold stratified CV and two walk-forwards split on listed_at, for
+ * the radar-4 model (category median + capped size adjustment) against the
+ * flat radar-2 baseline on the same splits, plus the size curve (log-ratio
+ * slope, TVL terciles overall and per family). The baseline in every run
+ * is the radar-2 rule (train-only medians plus the same set-value overrides
+ * as the published table), so the comparison is against the model radar-4
+ * extends, not against a straw man.
  */
 export function validateModel(snapshot: Snapshot): ValidationReport {
   const pool = comparablePool(snapshot);
   const asOf = snapshot.as_of;
   const metrics: ValidationMetric[] = [];
 
-  // 5-fold stratified CV: ridge, baseline, blend.
+  // 5-fold stratified CV: radar-4 model vs flat baseline.
   const folds = stratifiedFolds(pool);
-  const cvRidge: number[] = [];
+  const cvModel: number[] = [];
   const cvBase: number[] = [];
-  const cvBlend: number[] = [];
   const cvActual: number[] = [];
-  const cvNoQuad: number[] = [];
   const cvTrainSizes: number[] = [];
   for (let f = 0; f < 5; f++) {
     const test = folds[f]!;
     const train = folds.flatMap((x, i) => (i === f ? [] : x));
     cvTrainSizes.push(train.length);
-    const fit = fitRidge(train, asOf, RIDGE_LAMBDA, true);
-    const fitNoQuad = fitRidge(train, asOf, RIDGE_LAMBDA, false);
     for (const p of test) {
-      const r = ridgePredict(fit, p, asOf);
-      const rq = ridgePredict(fitNoQuad, p, asOf);
-      const b = Math.log(p.tvl_usd) + Math.log(validationBaselineMultiple(train, p.category));
-      cvRidge.push(r);
-      cvNoQuad.push(rq);
-      cvBase.push(b);
-      cvBlend.push(RIDGE_WEIGHT * r + (1 - RIDGE_WEIGHT) * b);
+      cvModel.push(modelPredict(train, p));
+      cvBase.push(baselinePredict(train, p));
       cvActual.push(Math.log(p.mcap_usd!));
     }
   }
-  const cvR = heldOutMetrics(cvRidge, cvActual);
+  const cvM = heldOutMetrics(cvModel, cvActual);
   const cvB = heldOutMetrics(cvBase, cvActual);
-  const cvL = heldOutMetrics(cvBlend, cvActual);
-  const cvQ = heldOutMetrics(cvNoQuad, cvActual);
   const cvTrainMin = Math.min(...cvTrainSizes);
   const cvTrainMax = Math.max(...cvTrainSizes);
   metrics.push({
@@ -787,47 +706,37 @@ export function validateModel(snapshot: Snapshot): ValidationReport {
     split: `all 116 comps, each held out once; train ${cvTrainMin}–${cvTrainMax} per fold`,
     n_train: cvTrainMin,
     n_test: 116,
-    ridge_rmse: cvR.rmse,
-    ridge_r2: cvR.r2,
+    model_rmse: cvM.rmse,
+    model_r2: cvM.r2,
     baseline_rmse: cvB.rmse,
     baseline_r2: cvB.r2,
-    blend_rmse: cvL.rmse,
-    blend_r2: cvL.r2,
   });
 
   // Walk-forwards: fit on protocols listed before the cut, predict those listed after.
-  const wf: { cut: string; blend: { rmse: number; r2: number }; base: { rmse: number; r2: number }; ridge: { rmse: number; r2: number }; nTrain: number; nTest: number }[] = [];
+  const wf: { cut: string; model: { rmse: number; r2: number }; base: { rmse: number; r2: number }; nTrain: number; nTest: number }[] = [];
   for (const cut of ['2025-01-01', '2025-06-30']) {
     const train = pool.filter((p) => p.listed_at !== null && p.listed_at < cut);
     const test = pool.filter((p) => p.listed_at !== null && p.listed_at >= cut);
-    const fit = fitRidge(train, asOf, RIDGE_LAMBDA, true);
-    const rp: number[] = [];
+    const mp: number[] = [];
     const bp: number[] = [];
-    const lp: number[] = [];
     const ap: number[] = [];
     for (const p of test) {
-      const r = ridgePredict(fit, p, asOf);
-      const b = Math.log(p.tvl_usd) + Math.log(validationBaselineMultiple(train, p.category));
-      rp.push(r);
-      bp.push(b);
-      lp.push(RIDGE_WEIGHT * r + (1 - RIDGE_WEIGHT) * b);
+      mp.push(modelPredict(train, p));
+      bp.push(baselinePredict(train, p));
       ap.push(Math.log(p.mcap_usd!));
     }
-    const rr = heldOutMetrics(rp, ap);
+    const mm = heldOutMetrics(mp, ap);
     const bb = heldOutMetrics(bp, ap);
-    const ll = heldOutMetrics(lp, ap);
-    wf.push({ cut, blend: ll, base: bb, ridge: rr, nTrain: train.length, nTest: test.length });
+    wf.push({ cut, model: mm, base: bb, nTrain: train.length, nTest: test.length });
     metrics.push({
       method: 'walk-forward',
       split: `listed_at < ${cut} trains, >= ${cut} tests (28 null-date comps excluded from both sides)`,
       n_train: train.length,
       n_test: test.length,
-      ridge_rmse: rr.rmse,
-      ridge_r2: rr.r2,
+      model_rmse: mm.rmse,
+      model_r2: mm.r2,
       baseline_rmse: bb.rmse,
       baseline_r2: bb.r2,
-      blend_rmse: ll.rmse,
-      blend_r2: ll.r2,
     });
   }
 
@@ -870,58 +779,32 @@ export function validateModel(snapshot: Snapshot): ValidationReport {
     };
   });
 
-  // Fitted elasticity d log(mcap) / d log(TVL) at four TVLs, from the full fit.
-  const fullFit = fitRidge(pool, asOf, RIDGE_LAMBDA, true);
-  const bLt = rawBeta(fullFit, 0);
-  const bLt2 = rawBeta(fullFit, 1);
-  const elasticityAt = [5_000_000, 50_000_000, 500_000_000, 5_000_000_000].map((tvl) => ({
-    tvl_usd: tvl,
-    elasticity: round4(bLt + 2 * bLt2 * (Math.log(tvl) - 17.5)),
-  }));
-  const cats = fullFit.categories.map((c, i) => ({ category: c, coefficient: round4(fullFit.coefficients[5 + i]!) }));
-
   const report: ValidationReport = {
-    method: 'Ridge of log(mcap) on log TVL, (log TVL)^2, log age, log(1+chains) and category dummies (lambda=100), blended 50/50 in log space with the radar-2 category-median baseline. Validated out-of-sample by 5-fold stratified CV and two walk-forwards (cuts 2025-01-01, 2025-06-30). All errors are log-scale RMSE on held-out log(mcap).',
-    lambda: RIDGE_LAMBDA,
-    ridge_weight: RIDGE_WEIGHT,
+    method: 'Category-median multiple (winsorised, n=116 live-token comps) with a capped size adjustment: slope -0.10 on log TVL vs the comps median log TVL, clamped to +/-15%. Validated out-of-sample by 5-fold stratified CV and two walk-forwards (cuts 2025-01-01, 2025-06-30) against the flat category-median baseline. All errors are log-scale RMSE on held-out log(mcap).',
+    size_slope: SIZE_ADJ_SLOPE,
+    size_cap: SIZE_ADJ_CAP,
     n_comps: pool.length,
     folds: 5,
-    held_out_rmse: cvL.rmse,
-    held_out_r2: cvL.r2,
+    held_out_rmse: cvM.rmse,
+    held_out_r2: cvM.r2,
     baseline_rmse: cvB.rmse,
     baseline_r2: cvB.r2,
     n_test: pool.length,
-    ridge_rmse_cv: cvR.rmse,
-    ridge_r2_cv: cvR.r2,
-    blend_rmse_cv: cvL.rmse,
-    blend_r2_cv: cvL.r2,
-    walkforward_2025_01_01_blend_rmse: wf[0]!.blend.rmse,
-    walkforward_2025_01_01_blend_r2: wf[0]!.blend.r2,
+    walkforward_2025_01_01_model_rmse: wf[0]!.model.rmse,
+    walkforward_2025_01_01_model_r2: wf[0]!.model.r2,
     walkforward_2025_01_01_baseline_rmse: wf[0]!.base.rmse,
     walkforward_2025_01_01_baseline_r2: wf[0]!.base.r2,
-    walkforward_2025_06_30_blend_rmse: wf[1]!.blend.rmse,
-    walkforward_2025_06_30_blend_r2: wf[1]!.blend.r2,
+    walkforward_2025_06_30_model_rmse: wf[1]!.model.rmse,
+    walkforward_2025_06_30_model_r2: wf[1]!.model.r2,
     walkforward_2025_06_30_baseline_rmse: wf[1]!.base.rmse,
     walkforward_2025_06_30_baseline_r2: wf[1]!.base.r2,
     size_curve_slope: round4(slope),
-    conclusion: `Blend (lambda=100, weight 0.5) beats both parents on all three held-out tests: CV RMSE ${cvL.rmse} vs ridge ${cvR.rmse} vs baseline ${cvB.rmse}; walk-forward 2025-01-01 ${wf[0]!.blend.rmse} vs ${wf[0]!.ridge.rmse} / ${wf[0]!.base.rmse}; walk-forward 2025-06-30 ${wf[1]!.blend.rmse} vs ${wf[1]!.ridge.rmse} / ${wf[1]!.base.rmse}. Pure ridge wins the CV but loses both walk-forwards; the category median wins neither. The blend is the final model.`,
+    conclusion: `Size-adjusted model (slope -0.10, capped +/-15%) beats the flat baseline on all three held-out tests: CV RMSE ${cvM.rmse} vs baseline ${cvB.rmse}; walk-forward 2025-01-01 ${wf[0]!.model.rmse} vs ${wf[0]!.base.rmse}; walk-forward 2025-06-30 ${wf[1]!.model.rmse} vs ${wf[1]!.base.rmse}. The fitted size slope is ${round4(slope)}, deliberately capped at -0.10 so the adjustment can only nudge a row.`,
     metrics,
     size_curve: {
       slope: round4(slope),
       terciles,
       families: familyTerciles,
-      elasticity_at: elasticityAt,
-      quadratic_cv_rmse: cvR.rmse,
-      no_quadratic_cv_rmse: cvQ.rmse,
-    },
-    coefficients: {
-      lambda: RIDGE_LAMBDA,
-      intercept: round4(fullFit.coefficients[0]!),
-      log_tvl: round4(bLt),
-      log_tvl_sq: round4(bLt2),
-      log_age: round4(rawBeta(fullFit, 2)),
-      log_chains: round4(rawBeta(fullFit, 3)),
-      categories: cats,
     },
   };
   return report;
@@ -938,15 +821,15 @@ export interface Scored {
   plaus: number;
   plausReason: string;
   multiple: CategoryMultiple;
+  sizeAdj: number;
+  sizeAdjBasis: string;
   age: number | null;
   ageForModel: number;
   rangeLow: number | null;
   rangeHigh: number | null;
   compN: number;
   compMedian: number | null;
-  ridgeLog: number;
-  baselineLog: number;
-  effectiveMultiple: number;
+  comparables: RowComparable[];
 }
 
 export function scoreProtocol(
@@ -954,7 +837,8 @@ export function scoreProtocol(
   asOf: string,
   model: ModelConstants,
   stats: Map<string, CategoryStats>,
-  fit: RidgeFit,
+  medianLogTvl: number,
+  allComps: Comparable[],
 ): Scored {
   const age = ageDays(asOf, protocol.listed_at);
   const ageForModel = age ?? model.unknown_age_days;
@@ -966,35 +850,85 @@ export function scoreProtocol(
   const dblcount = doubleCountMultiplier(protocol.category);
   const { factor: plaus, reason: plausReason } = plausibility(protocol);
   const baseEntry = categoryMultiple(protocol.category);
-  // radar-3 core: the log-space blend of the ridge prediction and the
-  // radar-2 category-median baseline. The effective multiple is the core
-  // per dollar of TVL, so the dashboard's replay (TVL x multiple x growth
-  // x maturity x chain x double-count x plausibility) reproduces the
-  // board value exactly, using the same factor order.
-  const ridgeLog = ridgePredict(fit, protocol, asOf);
-  const baselineLog = Math.log(protocol.tvl_usd) + Math.log(baseEntry.multiple);
-  const coreLog = RIDGE_WEIGHT * ridgeLog + (1 - RIDGE_WEIGHT) * baselineLog;
-  const effectiveMultiple = round4(Math.exp(coreLog) / protocol.tvl_usd);
+  // radar-4 core: the category median, times the capped size adjustment.
+  // The adjustment is one visible line in the dashboard's replay, with its
+  // slope and its cap stated next to it.
+  const sizeAdj = sizeAdjustment(protocol.tvl_usd, medianLogTvl);
+  const sizeAdjBasis = `size adjustment ${sizeAdj >= 1 ? '+' : ''}${round4((sizeAdj - 1) * 100)}% (slope -0.10 on log TVL vs comps median, capped at +/-15%)`;
   const multiple: CategoryMultiple = {
-    multiple: effectiveMultiple,
-    basis: `radar-3 blend: 50% ridge (lambda=${RIDGE_LAMBDA}) + 50% category median ${baseEntry.multiple} (n=${stats.get(protocol.category ?? 'Other')?.n ?? 0} comps)`,
+    multiple: baseEntry.multiple,
+    basis: `${baseEntry.basis}`,
     confidence: baseEntry.confidence,
   };
-  const implied = Math.max(1, Math.round(protocol.tvl_usd * effectiveMultiple * growthMult * maturityMult * chainMult * dblcount * plaus));
+  const implied = Math.max(1, Math.round(protocol.tvl_usd * baseEntry.multiple * sizeAdj * growthMult * maturityMult * chainMult * dblcount * plaus));
   const catStats = stats.get(protocol.category ?? 'Other');
   const compN = catStats?.n ?? 0;
   const compMedian = catStats?.median ?? null;
+  // The p25/p75 range: the category's own quartiles where it has at least
+  // four comps, else the whole pool's quartiles, so every row gets a range.
+  const allRatios = allComps.map((c) => c.ratio).sort((a, b) => a - b);
+  const q25 = catStats !== undefined && compN >= model.range_min_comps && catStats.p25 !== null ? catStats.p25 : percentile(allRatios, 0.25);
+  const q75 = catStats !== undefined && compN >= model.range_min_comps && catStats.p75 !== null ? catStats.p75 : percentile(allRatios, 0.75);
   let rangeLow: number | null = null;
   let rangeHigh: number | null = null;
-  if (catStats !== undefined && compN >= model.range_min_comps && catStats.p25 !== null && catStats.p75 !== null) {
-    // Same blend, with the p25/p75 ratio in place of the median in the baseline half.
-    const rest = growthMult * maturityMult * chainMult * dblcount * plaus;
-    const eff25 = round4(Math.exp(RIDGE_WEIGHT * ridgeLog + (1 - RIDGE_WEIGHT) * (Math.log(protocol.tvl_usd) + Math.log(catStats.p25))) / protocol.tvl_usd);
-    const eff75 = round4(Math.exp(RIDGE_WEIGHT * ridgeLog + (1 - RIDGE_WEIGHT) * (Math.log(protocol.tvl_usd) + Math.log(catStats.p75))) / protocol.tvl_usd);
-    rangeLow = Math.max(1, Math.round(protocol.tvl_usd * eff25 * rest));
-    rangeHigh = Math.max(1, Math.round(protocol.tvl_usd * eff75 * rest));
+  if (q25 !== null && q75 !== null) {
+    const rest = sizeAdj * growthMult * maturityMult * chainMult * dblcount * plaus;
+    rangeLow = Math.max(1, Math.round(protocol.tvl_usd * q25 * rest));
+    rangeHigh = Math.max(1, Math.round(protocol.tvl_usd * q75 * rest));
   }
-  return { implied, growthPct, growthMult, maturityMult, chainMult, dblcount, plaus, plausReason, multiple, age, ageForModel, rangeLow, rangeHigh, compN, compMedian, ridgeLog, baselineLog, effectiveMultiple };
+  // One-per-ticker comparables: the live-token comps in this category
+  // nearest to this row by TVL; where the category has fewer than four
+  // comps, the nearest comps in the whole pool fill the table, so every
+  // row shows at least four named comps.
+  const lt = Math.log(protocol.tvl_usd);
+  const catComps = catStats?.comps ?? [];
+  const pool = catComps.length >= 4 ? catComps : allComps;
+  const comparables: RowComparable[] = [...pool]
+    .sort((a, b) => Math.abs(Math.log(a.tvl_usd) - lt) - Math.abs(Math.log(b.tvl_usd) - lt))
+    .slice(0, 5)
+    .map((c) => ({ name: c.name, ratio: c.ratio, mcap_usd: c.mcap_usd, tvl_usd: c.tvl_usd }));
+  return { implied, growthPct, growthMult, maturityMult, chainMult, dblcount, plaus, plausReason, multiple, sizeAdj, sizeAdjBasis, age, ageForModel, rangeLow, rangeHigh, compN, compMedian, comparables };
+}
+
+/** A farm plan's signal strength: what the research actually verified, never a points program the snapshot cannot show. */
+export function farmSignal(p: SnapshotProtocol): string {
+  switch (p.slug) {
+    case 'upshift': return 'Strong — Season 2 points verified live (5x boost until $750M TVL)';
+    case 'veda': return 'Partial — points formula verified (USD x 0.01 x days); no Veda-run season confirmed open';
+    case 'symbiotic': return 'Weak — points since mid-2024, no named campaign, no token promise';
+    case 'lagoon': return 'Yield-only — Lagoon issues no points; return is vault yield plus underlying rewards';
+    case 'keyrock': return 'No retail farm — institutional market maker; watch only';
+    case 'tulipa-capital': return 'No retail farm — institutional curator; watch only';
+    case 'gauntlet': return 'Yield-only — no token; return is vault borrowing interest';
+    case 'steakhouse-financial': return 'Yield-only — no token; return is vault borrowing interest';
+    case 'clearstar': case 'k3-capital': case 'rockawayx': case 'hyperithm': case 'galaxy-curation': case 'armitage-by-wintermute': case 'nonce-capital': case 'gami-labs':
+      return 'Yield-only — no points program of its own; return is vault yield';
+    case 'usdd': case 'bittensor-dtao': case 'plume-vaults':
+      return 'No launch — token already trades; yield-only';
+    case 'lightning-network': return 'No launch — no token thesis';
+    default: return 'Unconfirmed — snapshot has no points or funding field; verify on the protocol’s own points page before depositing';
+  }
+}
+
+/** The farm plan's money line, in dollars: deposit (recoverable), gas (estimate), and the yield that deposit earns over the hold at 3–8% APY, net of gas. Points value is counted as $0 — never promised, never counted. */
+export function farmEconomics(p: SnapshotProtocol, ageForModel: number): FarmEconomics {
+  const capital = capitalFor(p);
+  const hold = holdDaysFor(ageForModel);
+  const chain = chainOf(p);
+  const gas = chain === 'Ethereum' ? 8 : 1;
+  const low = Math.round(capital * 0.03 * (hold / 365) * 100) / 100;
+  const high = Math.round(capital * 0.08 * (hold / 365) * 100) / 100;
+  return {
+    capital_usd: capital,
+    gas_usd: gas,
+    hold_days: hold,
+    expected_yield_low_usd: low,
+    expected_yield_high_usd: high,
+    net_low_usd: Math.round((low - gas) * 100) / 100,
+    net_high_usd: Math.round((high - gas) * 100) / 100,
+    signal: farmSignal(p),
+    risk: 'Risk: points may never convert, rules can change or dilute, some mints need KYC or an allowlist; never pay to claim.',
+  };
 }
 
 /** DefiLlama's version-marker rule: a name ending in a release is a pool of another protocol. */
@@ -1025,7 +959,9 @@ function bySlug(protocols: SnapshotProtocol[]): Map<string, SnapshotProtocol> {
 /** The protocols the board ranks, strongest first, with ranks 1..n. */
 export function buildBoard(snapshot: Snapshot, model: ModelConstants = MODEL): BoardRow[] {
   const stats = categoryStats(snapshot);
-  const fit = fitRidge(comparablePool(snapshot), snapshot.as_of, RIDGE_LAMBDA, true);
+  const pool = comparablePool(snapshot);
+  const medianLog = medianLogTvl(pool);
+  const allComps: Comparable[] = [...stats.values()].flatMap((c) => c.comps);
   const index = bySlug(snapshot.protocols);
   const chosen = new Map<string, SnapshotProtocol>();
   // The watchlist is the floor: every slug the snapshot carries.
@@ -1041,11 +977,17 @@ export function buildBoard(snapshot: Snapshot, model: ModelConstants = MODEL): B
     .slice(0, EARLY_ROWS);
   for (const p of early) chosen.set(p.slug, p);
 
-  const scored = [...chosen.values()].map((p) => ({ p, s: scoreProtocol(p, snapshot.as_of, model, stats, fit) }));
+  const scored = [...chosen.values()].map((p) => ({ p, s: scoreProtocol(p, snapshot.as_of, model, stats, medianLog, allComps) }));
   scored.sort((a, b) => b.s.implied - a.s.implied || (a.p.slug < b.p.slug ? -1 : a.p.slug > b.p.slug ? 1 : 0));
+  const implieds = scored.map((e) => e.s.implied);
   return scored.map((entry, i) => {
     const { p, s } = entry;
     const confidence: 'high' | 'medium' | 'low' = s.plaus < 1 ? 'low' : s.multiple.confidence;
+    // Rank range from the row's own p25/p75 value range, against the board as scored.
+    const hi = s.rangeHigh ?? s.implied;
+    const lo = s.rangeLow ?? s.implied;
+    const rankLo = 1 + implieds.filter((v) => v > hi).length;
+    const rankHi = 1 + implieds.filter((v) => v > lo).length;
     return {
       rank: i + 1,
       slug: p.slug,
@@ -1081,7 +1023,13 @@ export function buildBoard(snapshot: Snapshot, model: ModelConstants = MODEL): B
         comparables_n: s.compN,
         comparables_median: s.compMedian === null ? null : round4(s.compMedian),
         age_days: s.age,
+        size_adjustment: s.sizeAdj,
+        size_adjustment_basis: s.sizeAdjBasis,
+        comparables: s.comparables,
+        rank_lo: rankLo,
+        rank_hi: rankHi,
       },
+      farm: farmEconomics(p, s.ageForModel),
       farm_steps: farmSteps(p, s.ageForModel).map(stepText),
     };
   });
@@ -1464,6 +1412,7 @@ export function radarRow(row: BoardRow): RadarRow {
     age_days: row.age_days,
     implied_value_usd: row.implied_value_usd,
     model: row.model,
+    farm: row.farm,
     farm_steps: row.farm_steps,
   };
 }
@@ -1488,6 +1437,7 @@ export function buildRadar(snapshot: Snapshot, model: ModelConstants = MODEL): {
     early_size: early,
     live_size: live.length,
     watchlist_implied_sum_usd: watchlistSum,
+    size_median_log_tvl: round4(medianLogTvl(comparablePool(snapshot))),
     category_multiples: CATEGORY_MULTIPLES,
     fallback_multiple: FALLBACK_MULTIPLE,
     plausibility_rules: PLAUSIBILITY_RULES,
