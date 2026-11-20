@@ -1,3 +1,9 @@
+# Status
+
+This file is a historical research note. Sections 1–8 record radar-2, section 9 records radar-3, and section 10 records radar-4, dated 2026-11-18. The scorer in this repository is radar-5 (`MODEL_VERSION` in `lib/model.ts`). The current method, the commands that were actually run, and a synthetic example are in `README.md` and `docs/example.md`.
+
+The dollar figures below were not recomputed for this documentation update. They refer to an external DefiLlama snapshot that is not in the repository. They are not radar-5 results, and they are not the synthetic fixture's results.
+
 # token-radar-01 — Methodology Research (radar-4 model; §§1–8 record radar-2, §9 the radar-3 upgrade, §10 radar-4)
 
 Date: 2026-11-18. Snapshot: DefiLlama `api.llama.fi/protocols`, fetched 2026-11-14T01:18:33Z, `as_of` 2026-11-14, floor $50M, 758 protocols, 40 watchlist. All snapshot numbers below are computed from that file (`~/workspace/makefun/token-radar-01-kit/input/snapshot.json`); no entry code was written and no code was copied.

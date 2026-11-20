@@ -1,3 +1,9 @@
+# Status
+
+This file is a historical verification note dated 2026-11-18 for radar-4. It was not repeated against the current radar-5 scorer, and the external snapshot it cites is not in the repository. Live API spot checks described below were not rerun for the documentation update. Do not read the dollar table as a current radar-5 result.
+
+What was run for the documentation update is the synthetic fixture in `docs/example.md`.
+
 # Verification — token-radar-01 (radar-4)
 
 Date: 2026-11-18. Verifier: builder session. All checks below are read-only:
