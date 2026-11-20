@@ -1,3 +1,9 @@
+# Status
+
+This file records radar-4 validation dated 2026-11-18. The scorer now in `lib/model.ts` is radar-5. `validateModel` writes median-miss multiples, not the log-RMSE table below. The numbers in this file were not recomputed in the documentation update, and the external snapshot they cite is not in the repository.
+
+The synthetic fixture's own validation multiples, including where they do not match the sentence the scorer writes, are in `docs/example.md`. Comments in `lib/model.ts` that name radar-5 fit coefficients are unverified claims until that external snapshot is run again. The committed screenshots show a radar-5 page whose visible fit figures are also unverified here, and they do not match every figure in those comments.
+
 # token-radar-01 — Validation (radar-4)
 
 Date: 2026-11-18. Model: radar-4 (`lib/model.ts`, `MODEL_VERSION = 'radar-4'`).

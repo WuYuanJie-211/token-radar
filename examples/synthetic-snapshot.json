@@ -1,0 +1,2289 @@
+{
+  "note": "SYNTHETIC fixture. Not a DefiLlama snapshot. Every name and figure is invented so the documented commands can be run without the external snapshot.",
+  "as_of": "2026-01-15",
+  "source": "SYNTHETIC fixture — not DefiLlama",
+  "floor_usd": 50000000,
+  "protocols": [
+    {
+      "slug": "feecomp-01",
+      "name": "Feecomp Lending 1",
+      "category": "Lending",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 5000000,
+      "change_7d": -4.5,
+      "mcap_usd": 750000,
+      "listed_at": "2024-06-01",
+      "gecko_id": "feecomp-1",
+      "symbol": "FC1"
+    },
+    {
+      "slug": "feecomp-02",
+      "name": "Feecomp Dexs 2",
+      "category": "Dexs",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 12000000,
+      "change_7d": -3,
+      "mcap_usd": 3600000,
+      "listed_at": "2024-06-01",
+      "gecko_id": "feecomp-2",
+      "symbol": "FC2"
+    },
+    {
+      "slug": "feecomp-03",
+      "name": "Feecomp RWA 3",
+      "category": "RWA",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 19000000,
+      "change_7d": -1.5,
+      "mcap_usd": 4750000,
+      "listed_at": "2024-06-01",
+      "gecko_id": "feecomp-3",
+      "symbol": "FC3"
+    },
+    {
+      "slug": "feecomp-04",
+      "name": "Feecomp Yield 4",
+      "category": "Yield",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 26000000,
+      "change_7d": 0,
+      "mcap_usd": 4680000,
+      "listed_at": "2024-06-01",
+      "gecko_id": "feecomp-4",
+      "symbol": "FC4"
+    },
+    {
+      "slug": "feecomp-05",
+      "name": "Feecomp Restaking 5",
+      "category": "Restaking",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 33000000,
+      "change_7d": 1.5,
+      "mcap_usd": 1320000,
+      "listed_at": "2024-06-01",
+      "gecko_id": "feecomp-5",
+      "symbol": "FC5"
+    },
+    {
+      "slug": "feecomp-06",
+      "name": "Feecomp Risk Curators 6",
+      "category": "Risk Curators",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 40000000,
+      "change_7d": 3,
+      "mcap_usd": 800000,
+      "listed_at": "2024-06-01",
+      "gecko_id": "feecomp-6",
+      "symbol": "FC6"
+    },
+    {
+      "slug": "feecomp-07",
+      "name": "Feecomp Basis Trading 7",
+      "category": "Basis Trading",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 47000000,
+      "change_7d": 4.5,
+      "mcap_usd": 18800000,
+      "listed_at": "2024-06-01",
+      "gecko_id": "feecomp-7",
+      "symbol": "FC7"
+    },
+    {
+      "slug": "feecomp-08",
+      "name": "Feecomp Payments 8",
+      "category": "Payments",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 54000000,
+      "change_7d": -4.5,
+      "mcap_usd": 10800000,
+      "listed_at": "2024-06-01",
+      "gecko_id": "feecomp-8",
+      "symbol": "FC8"
+    },
+    {
+      "slug": "feecomp-09",
+      "name": "Feecomp CDP 9",
+      "category": "CDP",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 61000000,
+      "change_7d": -3,
+      "mcap_usd": 9760000,
+      "listed_at": "2024-06-01",
+      "gecko_id": "feecomp-9",
+      "symbol": "FC9"
+    },
+    {
+      "slug": "feecomp-10",
+      "name": "Feecomp Liquid Staking 10",
+      "category": "Liquid Staking",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 68000000,
+      "change_7d": -1.5,
+      "mcap_usd": 2040000,
+      "listed_at": "2024-06-01",
+      "gecko_id": "feecomp-10",
+      "symbol": "FC10"
+    },
+    {
+      "slug": "feecomp-11",
+      "name": "Feecomp Lending 11",
+      "category": "Lending",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 75000000,
+      "change_7d": 0,
+      "mcap_usd": 11250000,
+      "listed_at": "2025-03-15",
+      "gecko_id": "feecomp-11",
+      "symbol": "FC11"
+    },
+    {
+      "slug": "feecomp-12",
+      "name": "Feecomp Dexs 12",
+      "category": "Dexs",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 82000000,
+      "change_7d": 1.5,
+      "mcap_usd": 24600000,
+      "listed_at": "2025-03-15",
+      "gecko_id": "feecomp-12",
+      "symbol": "FC12"
+    },
+    {
+      "slug": "feecomp-13",
+      "name": "Feecomp RWA 13",
+      "category": "RWA",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 89000000,
+      "change_7d": 3,
+      "mcap_usd": 22250000,
+      "listed_at": "2025-03-15",
+      "gecko_id": "feecomp-13",
+      "symbol": "FC13"
+    },
+    {
+      "slug": "feecomp-14",
+      "name": "Feecomp Yield 14",
+      "category": "Yield",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 96000000,
+      "change_7d": 4.5,
+      "mcap_usd": 17280000,
+      "listed_at": "2025-03-15",
+      "gecko_id": "feecomp-14",
+      "symbol": "FC14"
+    },
+    {
+      "slug": "feecomp-15",
+      "name": "Feecomp Restaking 15",
+      "category": "Restaking",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 103000000,
+      "change_7d": -4.5,
+      "mcap_usd": 4120000,
+      "listed_at": "2025-03-15",
+      "gecko_id": "feecomp-15",
+      "symbol": "FC15"
+    },
+    {
+      "slug": "feecomp-16",
+      "name": "Feecomp Risk Curators 16",
+      "category": "Risk Curators",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 110000000,
+      "change_7d": -3,
+      "mcap_usd": 2200000,
+      "listed_at": "2025-03-15",
+      "gecko_id": "feecomp-16",
+      "symbol": "FC16"
+    },
+    {
+      "slug": "feecomp-17",
+      "name": "Feecomp Basis Trading 17",
+      "category": "Basis Trading",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 117000000,
+      "change_7d": -1.5,
+      "mcap_usd": 46800000,
+      "listed_at": "2025-03-15",
+      "gecko_id": "feecomp-17",
+      "symbol": "FC17"
+    },
+    {
+      "slug": "feecomp-18",
+      "name": "Feecomp Payments 18",
+      "category": "Payments",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 124000000,
+      "change_7d": 0,
+      "mcap_usd": 24800000,
+      "listed_at": "2025-03-15",
+      "gecko_id": "feecomp-18",
+      "symbol": "FC18"
+    },
+    {
+      "slug": "feecomp-19",
+      "name": "Feecomp CDP 19",
+      "category": "CDP",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 131000000,
+      "change_7d": 1.5,
+      "mcap_usd": 20960000,
+      "listed_at": "2025-03-15",
+      "gecko_id": "feecomp-19",
+      "symbol": "FC19"
+    },
+    {
+      "slug": "feecomp-20",
+      "name": "Feecomp Liquid Staking 20",
+      "category": "Liquid Staking",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 138000000,
+      "change_7d": 3,
+      "mcap_usd": 4140000,
+      "listed_at": "2025-03-15",
+      "gecko_id": "feecomp-20",
+      "symbol": "FC20"
+    },
+    {
+      "slug": "feecomp-21",
+      "name": "Feecomp Lending 21",
+      "category": "Lending",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 145000000,
+      "change_7d": 4.5,
+      "mcap_usd": 21750000,
+      "listed_at": "2025-08-01",
+      "gecko_id": "feecomp-21",
+      "symbol": "FC21"
+    },
+    {
+      "slug": "feecomp-22",
+      "name": "Feecomp Dexs 22",
+      "category": "Dexs",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 152000000,
+      "change_7d": -4.5,
+      "mcap_usd": 45600000,
+      "listed_at": "2025-08-01",
+      "gecko_id": "feecomp-22",
+      "symbol": "FC22"
+    },
+    {
+      "slug": "feecomp-23",
+      "name": "Feecomp RWA 23",
+      "category": "RWA",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 159000000,
+      "change_7d": -3,
+      "mcap_usd": 39750000,
+      "listed_at": "2025-08-01",
+      "gecko_id": "feecomp-23",
+      "symbol": "FC23"
+    },
+    {
+      "slug": "feecomp-24",
+      "name": "Feecomp Yield 24",
+      "category": "Yield",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 166000000,
+      "change_7d": -1.5,
+      "mcap_usd": 29880000,
+      "listed_at": "2025-08-01",
+      "gecko_id": "feecomp-24",
+      "symbol": "FC24"
+    },
+    {
+      "slug": "feecomp-25",
+      "name": "Feecomp Restaking 25",
+      "category": "Restaking",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 173000000,
+      "change_7d": 0,
+      "mcap_usd": 6920000,
+      "listed_at": "2025-08-01",
+      "gecko_id": "feecomp-25",
+      "symbol": "FC25"
+    },
+    {
+      "slug": "feecomp-26",
+      "name": "Feecomp Risk Curators 26",
+      "category": "Risk Curators",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 180000000,
+      "change_7d": 1.5,
+      "mcap_usd": 3600000,
+      "listed_at": "2025-08-01",
+      "gecko_id": "feecomp-26",
+      "symbol": "FC26"
+    },
+    {
+      "slug": "feecomp-27",
+      "name": "Feecomp Basis Trading 27",
+      "category": "Basis Trading",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 187000000,
+      "change_7d": 3,
+      "mcap_usd": 74800000,
+      "listed_at": "2025-08-01",
+      "gecko_id": "feecomp-27",
+      "symbol": "FC27"
+    },
+    {
+      "slug": "feecomp-28",
+      "name": "Feecomp Payments 28",
+      "category": "Payments",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 194000000,
+      "change_7d": 4.5,
+      "mcap_usd": 38800000,
+      "listed_at": "2025-08-01",
+      "gecko_id": "feecomp-28",
+      "symbol": "FC28"
+    },
+    {
+      "slug": "feecomp-29",
+      "name": "Feecomp CDP 29",
+      "category": "CDP",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 201000000,
+      "change_7d": -4.5,
+      "mcap_usd": 32160000,
+      "listed_at": "2025-08-01",
+      "gecko_id": "feecomp-29",
+      "symbol": "FC29"
+    },
+    {
+      "slug": "feecomp-30",
+      "name": "Feecomp Liquid Staking 30",
+      "category": "Liquid Staking",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 208000000,
+      "change_7d": -3,
+      "mcap_usd": 6240000,
+      "listed_at": "2025-08-01",
+      "gecko_id": "feecomp-30",
+      "symbol": "FC30"
+    },
+    {
+      "slug": "feecomp-outlier",
+      "name": "Feecomp Outlier",
+      "category": "Lending",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 10000000,
+      "change_7d": 1,
+      "mcap_usd": 40000000,
+      "listed_at": "2024-01-01",
+      "gecko_id": "feecomp-outlier",
+      "symbol": "OUT"
+    },
+    {
+      "slug": "proto-watch-01",
+      "name": "Proto Watch 1",
+      "category": "RWA",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 91000000,
+      "change_7d": -8,
+      "mcap_usd": null,
+      "listed_at": null,
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-02",
+      "name": "Proto Watch 2",
+      "category": "Lending",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 90000000,
+      "change_7d": -6,
+      "mcap_usd": null,
+      "listed_at": "2025-09-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-03",
+      "name": "Proto Watch 3",
+      "category": "Risk Curators",
+      "chains": [
+        "Ethereum",
+        "Base"
+      ],
+      "tvl_usd": 89000000,
+      "change_7d": -4,
+      "mcap_usd": null,
+      "listed_at": "2024-02-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-04",
+      "name": "Proto Watch 4",
+      "category": "Onchain Capital Allocator",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 88000000,
+      "change_7d": -2,
+      "mcap_usd": null,
+      "listed_at": "2025-09-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-05",
+      "name": "Proto Watch 5",
+      "category": "Yield",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 87000000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2024-02-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-06",
+      "name": "Proto Watch 6",
+      "category": "Basis Trading",
+      "chains": [
+        "Ethereum",
+        "Base"
+      ],
+      "tvl_usd": 86000000,
+      "change_7d": 2,
+      "mcap_usd": null,
+      "listed_at": "2025-09-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-07",
+      "name": "Proto Watch 7",
+      "category": "Chain",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 85000000,
+      "change_7d": 4,
+      "mcap_usd": null,
+      "listed_at": "2024-02-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-08",
+      "name": "Proto Watch 8",
+      "category": "CDP",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 84000000,
+      "change_7d": 6,
+      "mcap_usd": null,
+      "listed_at": "2025-09-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-09",
+      "name": "Proto Watch 9",
+      "category": "Payments",
+      "chains": [
+        "Ethereum",
+        "Base"
+      ],
+      "tvl_usd": 83000000,
+      "change_7d": 8,
+      "mcap_usd": null,
+      "listed_at": "2024-02-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-10",
+      "name": "Proto Watch 10",
+      "category": "Dexs",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 82000000,
+      "change_7d": -8,
+      "mcap_usd": null,
+      "listed_at": "2025-09-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-11",
+      "name": "Proto Watch 11",
+      "category": "RWA",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 81000000,
+      "change_7d": -6,
+      "mcap_usd": null,
+      "listed_at": "2024-02-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-12",
+      "name": "Proto Watch 12",
+      "category": "Lending",
+      "chains": [
+        "Ethereum",
+        "Base"
+      ],
+      "tvl_usd": 80000000,
+      "change_7d": -4,
+      "mcap_usd": null,
+      "listed_at": "2025-09-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-13",
+      "name": "Proto Watch 13",
+      "category": "Risk Curators",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 79000000,
+      "change_7d": -2,
+      "mcap_usd": null,
+      "listed_at": "2024-02-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-14",
+      "name": "Proto Watch 14",
+      "category": "Onchain Capital Allocator",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 78000000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-09-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-15",
+      "name": "Proto Watch 15",
+      "category": "Yield",
+      "chains": [
+        "Ethereum",
+        "Base"
+      ],
+      "tvl_usd": 77000000,
+      "change_7d": 2,
+      "mcap_usd": null,
+      "listed_at": "2024-02-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-16",
+      "name": "Proto Watch 16",
+      "category": "Basis Trading",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 76000000,
+      "change_7d": 4,
+      "mcap_usd": null,
+      "listed_at": "2025-09-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-17",
+      "name": "Proto Watch 17",
+      "category": "Chain",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 75000000,
+      "change_7d": 6,
+      "mcap_usd": null,
+      "listed_at": "2024-02-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-18",
+      "name": "Proto Watch 18",
+      "category": "CDP",
+      "chains": [
+        "Ethereum",
+        "Base"
+      ],
+      "tvl_usd": 74000000,
+      "change_7d": 8,
+      "mcap_usd": null,
+      "listed_at": "2025-09-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-19",
+      "name": "Proto Watch 19",
+      "category": "Payments",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 73000000,
+      "change_7d": -8,
+      "mcap_usd": null,
+      "listed_at": "2024-02-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-20",
+      "name": "Proto Watch 20",
+      "category": "Dexs",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 72000000,
+      "change_7d": -6,
+      "mcap_usd": null,
+      "listed_at": "2025-09-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-21",
+      "name": "Proto Watch 21",
+      "category": "RWA",
+      "chains": [
+        "Ethereum",
+        "Base"
+      ],
+      "tvl_usd": 71000000,
+      "change_7d": -4,
+      "mcap_usd": null,
+      "listed_at": "2024-02-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-22",
+      "name": "Proto Watch 22",
+      "category": "Lending",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 70000000,
+      "change_7d": -2,
+      "mcap_usd": null,
+      "listed_at": "2025-09-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-23",
+      "name": "Proto Watch 23",
+      "category": "Risk Curators",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 69000000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2024-02-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-24",
+      "name": "Proto Watch 24",
+      "category": "Onchain Capital Allocator",
+      "chains": [
+        "Ethereum",
+        "Base"
+      ],
+      "tvl_usd": 68000000,
+      "change_7d": 2,
+      "mcap_usd": null,
+      "listed_at": "2025-09-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-25",
+      "name": "Proto Watch 25",
+      "category": "Yield",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 67000000,
+      "change_7d": 4,
+      "mcap_usd": null,
+      "listed_at": "2024-02-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-26",
+      "name": "Proto Watch 26",
+      "category": "Basis Trading",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 66000000,
+      "change_7d": 6,
+      "mcap_usd": null,
+      "listed_at": "2025-09-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-27",
+      "name": "Proto Watch 27",
+      "category": "Chain",
+      "chains": [
+        "Ethereum",
+        "Base"
+      ],
+      "tvl_usd": 65000000,
+      "change_7d": 8,
+      "mcap_usd": null,
+      "listed_at": "2024-02-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-28",
+      "name": "Proto Watch 28",
+      "category": "CDP",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 64000000,
+      "change_7d": -8,
+      "mcap_usd": null,
+      "listed_at": "2025-09-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-29",
+      "name": "Proto Watch 29",
+      "category": "Payments",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 63000000,
+      "change_7d": -6,
+      "mcap_usd": null,
+      "listed_at": "2024-02-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-30",
+      "name": "Proto Watch 30",
+      "category": "Dexs",
+      "chains": [
+        "Ethereum",
+        "Base"
+      ],
+      "tvl_usd": 62000000,
+      "change_7d": -4,
+      "mcap_usd": null,
+      "listed_at": "2025-09-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-31",
+      "name": "Proto Watch 31",
+      "category": "RWA",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 61000000,
+      "change_7d": -2,
+      "mcap_usd": null,
+      "listed_at": "2024-02-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-32",
+      "name": "Proto Watch 32",
+      "category": "Lending",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 60000000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-09-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-33",
+      "name": "Proto Watch 33",
+      "category": "Risk Curators",
+      "chains": [
+        "Ethereum",
+        "Base"
+      ],
+      "tvl_usd": 59000000,
+      "change_7d": 2,
+      "mcap_usd": null,
+      "listed_at": "2024-02-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-34",
+      "name": "Proto Watch 34",
+      "category": "Onchain Capital Allocator",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 58000000,
+      "change_7d": 4,
+      "mcap_usd": null,
+      "listed_at": "2025-09-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-35",
+      "name": "Proto Watch 35",
+      "category": "Yield",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 57000000,
+      "change_7d": 6,
+      "mcap_usd": null,
+      "listed_at": "2024-02-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-36",
+      "name": "Proto Watch 36",
+      "category": "Basis Trading",
+      "chains": [
+        "Ethereum",
+        "Base"
+      ],
+      "tvl_usd": 56000000,
+      "change_7d": 8,
+      "mcap_usd": null,
+      "listed_at": "2025-09-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-37",
+      "name": "Proto Watch 37",
+      "category": "Chain",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 55000000,
+      "change_7d": -8,
+      "mcap_usd": null,
+      "listed_at": "2024-02-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-38",
+      "name": "Proto Watch 38",
+      "category": "CDP",
+      "chains": [
+        "Solana"
+      ],
+      "tvl_usd": 54000000,
+      "change_7d": -6,
+      "mcap_usd": null,
+      "listed_at": "2025-09-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-39",
+      "name": "Proto Watch 39",
+      "category": "Payments",
+      "chains": [
+        "Ethereum",
+        "Base"
+      ],
+      "tvl_usd": 53000000,
+      "change_7d": -4,
+      "mcap_usd": null,
+      "listed_at": "2024-02-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-watch-40",
+      "name": "Proto Watch 40",
+      "category": "Dexs",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 52000000,
+      "change_7d": -2,
+      "mcap_usd": null,
+      "listed_at": "2025-09-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-off-01",
+      "name": "Proto Off 1",
+      "category": "RWA",
+      "chains": [
+        "Polygon"
+      ],
+      "tvl_usd": 60000000,
+      "change_7d": 1,
+      "mcap_usd": null,
+      "listed_at": "2025-04-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-off-02",
+      "name": "Proto Off 2",
+      "category": "Yield",
+      "chains": [
+        "Polygon"
+      ],
+      "tvl_usd": 60500000,
+      "change_7d": 1,
+      "mcap_usd": null,
+      "listed_at": "2025-04-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-off-03",
+      "name": "Proto Off 3",
+      "category": "RWA",
+      "chains": [
+        "Polygon"
+      ],
+      "tvl_usd": 61000000,
+      "change_7d": 1,
+      "mcap_usd": null,
+      "listed_at": "2025-04-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-off-04",
+      "name": "Proto Off 4",
+      "category": "Yield",
+      "chains": [
+        "Polygon"
+      ],
+      "tvl_usd": 61500000,
+      "change_7d": 1,
+      "mcap_usd": null,
+      "listed_at": "2025-04-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-off-05",
+      "name": "Proto Off 5",
+      "category": "RWA",
+      "chains": [
+        "Polygon"
+      ],
+      "tvl_usd": 62000000,
+      "change_7d": 1,
+      "mcap_usd": null,
+      "listed_at": "2025-04-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-off-06",
+      "name": "Proto Off 6",
+      "category": "Yield",
+      "chains": [
+        "Polygon"
+      ],
+      "tvl_usd": 62500000,
+      "change_7d": 1,
+      "mcap_usd": null,
+      "listed_at": "2025-04-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-off-07",
+      "name": "Proto Off 7",
+      "category": "RWA",
+      "chains": [
+        "Polygon"
+      ],
+      "tvl_usd": 63000000,
+      "change_7d": 1,
+      "mcap_usd": null,
+      "listed_at": "2025-04-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-off-08",
+      "name": "Proto Off 8",
+      "category": "Yield",
+      "chains": [
+        "Polygon"
+      ],
+      "tvl_usd": 63500000,
+      "change_7d": 1,
+      "mcap_usd": null,
+      "listed_at": "2025-04-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-off-09",
+      "name": "Proto Off 9",
+      "category": "RWA",
+      "chains": [
+        "Polygon"
+      ],
+      "tvl_usd": 64000000,
+      "change_7d": 1,
+      "mcap_usd": null,
+      "listed_at": "2025-04-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-off-10",
+      "name": "Proto Off 10",
+      "category": "Yield",
+      "chains": [
+        "Polygon"
+      ],
+      "tvl_usd": 64500000,
+      "change_7d": 1,
+      "mcap_usd": null,
+      "listed_at": "2025-04-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-off-11",
+      "name": "Proto Off 11",
+      "category": "RWA",
+      "chains": [
+        "Polygon"
+      ],
+      "tvl_usd": 65000000,
+      "change_7d": 1,
+      "mcap_usd": null,
+      "listed_at": "2025-04-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-off-12",
+      "name": "Proto Off 12",
+      "category": "Yield",
+      "chains": [
+        "Polygon"
+      ],
+      "tvl_usd": 65500000,
+      "change_7d": 1,
+      "mcap_usd": null,
+      "listed_at": "2025-04-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-off-13",
+      "name": "Proto Off 13",
+      "category": "RWA",
+      "chains": [
+        "Polygon"
+      ],
+      "tvl_usd": 66000000,
+      "change_7d": 1,
+      "mcap_usd": null,
+      "listed_at": "2025-04-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-off-14",
+      "name": "Proto Off 14",
+      "category": "Yield",
+      "chains": [
+        "Polygon"
+      ],
+      "tvl_usd": 66500000,
+      "change_7d": 1,
+      "mcap_usd": null,
+      "listed_at": "2025-04-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-off-15",
+      "name": "Proto Off 15",
+      "category": "RWA",
+      "chains": [
+        "Polygon"
+      ],
+      "tvl_usd": 67000000,
+      "change_7d": 1,
+      "mcap_usd": null,
+      "listed_at": "2025-04-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-01",
+      "name": "Proto Early 1",
+      "category": "Lending",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 49000000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-02",
+      "name": "Proto Early 2",
+      "category": "RWA",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 48900000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-03",
+      "name": "Proto Early 3",
+      "category": "Yield",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 48800000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-04",
+      "name": "Proto Early 4",
+      "category": "Dexs",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 48700000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-05",
+      "name": "Proto Early 5",
+      "category": "Lending",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 48600000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-06",
+      "name": "Proto Early 6",
+      "category": "RWA",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 48500000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-07",
+      "name": "Proto Early 7",
+      "category": "Yield",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 48400000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-08",
+      "name": "Proto Early 8",
+      "category": "Dexs",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 48300000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-09",
+      "name": "Proto Early 9",
+      "category": "Lending",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 48200000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-10",
+      "name": "Proto Early 10",
+      "category": "RWA",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 48100000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-11",
+      "name": "Proto Early 11",
+      "category": "Yield",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 48000000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-12",
+      "name": "Proto Early 12",
+      "category": "Dexs",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 47900000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-13",
+      "name": "Proto Early 13",
+      "category": "Lending",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 47800000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-14",
+      "name": "Proto Early 14",
+      "category": "RWA",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 47700000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-15",
+      "name": "Proto Early 15",
+      "category": "Yield",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 47600000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-16",
+      "name": "Proto Early 16",
+      "category": "Dexs",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 47500000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-17",
+      "name": "Proto Early 17",
+      "category": "Lending",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 47400000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-18",
+      "name": "Proto Early 18",
+      "category": "RWA",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 47300000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-19",
+      "name": "Proto Early 19",
+      "category": "Yield",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 47200000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-20",
+      "name": "Proto Early 20",
+      "category": "Dexs",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 47100000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-21",
+      "name": "Proto Early 21",
+      "category": "Lending",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 47000000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-22",
+      "name": "Proto Early 22",
+      "category": "RWA",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 46900000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-23",
+      "name": "Proto Early 23",
+      "category": "Yield",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 46800000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-24",
+      "name": "Proto Early 24",
+      "category": "Dexs",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 46700000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-25",
+      "name": "Proto Early 25",
+      "category": "Lending",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 46600000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-26",
+      "name": "Proto Early 26",
+      "category": "RWA",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 46500000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-27",
+      "name": "Proto Early 27",
+      "category": "Yield",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 46400000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-28",
+      "name": "Proto Early 28",
+      "category": "Dexs",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 46300000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-29",
+      "name": "Proto Early 29",
+      "category": "Lending",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 46200000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-30",
+      "name": "Proto Early 30",
+      "category": "RWA",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 46100000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-31",
+      "name": "Proto Early 31",
+      "category": "Yield",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 46000000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-32",
+      "name": "Proto Early 32",
+      "category": "Dexs",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 45900000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-33",
+      "name": "Proto Early 33",
+      "category": "Lending",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 45800000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-34",
+      "name": "Proto Early 34",
+      "category": "RWA",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 45700000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-35",
+      "name": "Proto Early 35",
+      "category": "Yield",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 45600000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-36",
+      "name": "Proto Early 36",
+      "category": "Dexs",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 45500000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-37",
+      "name": "Proto Early 37",
+      "category": "Lending",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 45400000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-38",
+      "name": "Proto Early 38",
+      "category": "RWA",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 45300000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-39",
+      "name": "Proto Early 39",
+      "category": "Yield",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 45200000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-40",
+      "name": "Proto Early 40",
+      "category": "Dexs",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 45100000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-41",
+      "name": "Proto Early 41",
+      "category": "Lending",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 45000000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-42",
+      "name": "Proto Early 42",
+      "category": "RWA",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 44900000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-43",
+      "name": "Proto Early 43",
+      "category": "Yield",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 44800000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-44",
+      "name": "Proto Early 44",
+      "category": "Dexs",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 44700000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-45",
+      "name": "Proto Early 45",
+      "category": "Lending",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 44600000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-46",
+      "name": "Proto Early 46",
+      "category": "RWA",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 44500000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-47",
+      "name": "Proto Early 47",
+      "category": "Yield",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 44400000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-48",
+      "name": "Proto Early 48",
+      "category": "Dexs",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 44300000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-49",
+      "name": "Proto Early 49",
+      "category": "Lending",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 44200000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-50",
+      "name": "Proto Early 50",
+      "category": "RWA",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 44100000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-51",
+      "name": "Proto Early 51",
+      "category": "Yield",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 44000000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-52",
+      "name": "Proto Early 52",
+      "category": "Dexs",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 43900000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-53",
+      "name": "Proto Early 53",
+      "category": "Lending",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 43800000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-54",
+      "name": "Proto Early 54",
+      "category": "RWA",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 43700000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-55",
+      "name": "Proto Early 55",
+      "category": "Yield",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 43600000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-56",
+      "name": "Proto Early 56",
+      "category": "Dexs",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 43500000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-57",
+      "name": "Proto Early 57",
+      "category": "Lending",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 43400000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-58",
+      "name": "Proto Early 58",
+      "category": "RWA",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 43300000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-59",
+      "name": "Proto Early 59",
+      "category": "Yield",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 43200000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-60",
+      "name": "Proto Early 60",
+      "category": "Dexs",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 43100000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-61",
+      "name": "Proto Early 61",
+      "category": "Lending",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 43000000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-62",
+      "name": "Proto Early 62",
+      "category": "RWA",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 42900000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-63",
+      "name": "Proto Early 63",
+      "category": "Yield",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 42800000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-64",
+      "name": "Proto Early 64",
+      "category": "Dexs",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 42700000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-65",
+      "name": "Proto Early 65",
+      "category": "Lending",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 42600000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-66",
+      "name": "Proto Early 66",
+      "category": "RWA",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 42500000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-67",
+      "name": "Proto Early 67",
+      "category": "Yield",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 42400000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-68",
+      "name": "Proto Early 68",
+      "category": "Dexs",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 42300000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-69",
+      "name": "Proto Early 69",
+      "category": "Lending",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 42200000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-early-70",
+      "name": "Proto Early 70",
+      "category": "RWA",
+      "chains": [
+        "Base"
+      ],
+      "tvl_usd": 42100000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2025-07-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-cex",
+      "name": "Proto Exchange",
+      "category": "CEX",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 80000000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2024-01-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-bridge",
+      "name": "Proto Bridge",
+      "category": "Bridge",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 70000000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2024-01-01",
+      "gecko_id": null,
+      "symbol": null
+    },
+    {
+      "slug": "proto-versioned",
+      "name": "Proto Versioned V2",
+      "category": "Lending",
+      "chains": [
+        "Ethereum"
+      ],
+      "tvl_usd": 40000000,
+      "change_7d": 0,
+      "mcap_usd": null,
+      "listed_at": "2024-01-01",
+      "gecko_id": null,
+      "symbol": null
+    }
+  ],
+  "watchlist": [
+    "proto-watch-01",
+    "proto-watch-02",
+    "proto-watch-03",
+    "proto-watch-04",
+    "proto-watch-05",
+    "proto-watch-06",
+    "proto-watch-07",
+    "proto-watch-08",
+    "proto-watch-09",
+    "proto-watch-10",
+    "proto-watch-11",
+    "proto-watch-12",
+    "proto-watch-13",
+    "proto-watch-14",
+    "proto-watch-15",
+    "proto-watch-16",
+    "proto-watch-17",
+    "proto-watch-18",
+    "proto-watch-19",
+    "proto-watch-20",
+    "proto-watch-21",
+    "proto-watch-22",
+    "proto-watch-23",
+    "proto-watch-24",
+    "proto-watch-25",
+    "proto-watch-26",
+    "proto-watch-27",
+    "proto-watch-28",
+    "proto-watch-29",
+    "proto-watch-30",
+    "proto-watch-31",
+    "proto-watch-32",
+    "proto-watch-33",
+    "proto-watch-34",
+    "proto-watch-35",
+    "proto-watch-36",
+    "proto-watch-37",
+    "proto-watch-38",
+    "proto-watch-39",
+    "proto-watch-40"
+  ]
+}
